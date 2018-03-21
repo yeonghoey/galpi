@@ -33,6 +33,7 @@ functions:
     environment:
       CLIENT_ID: ${s3:galpi-${self:provider.stage}/client_id}
       CLIENT_SECRET: ${s3:galpi-${self:provider.stage}/client_secret}
+      SECRET_KEY: ${s3:galpi-${self:provider.stage}/secret_key}
     events:
       - http: 'ANY /'
       - http: 'ANY {proxy+}'
