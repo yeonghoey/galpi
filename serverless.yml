@@ -1,28 +1,38 @@
 service: galpi
 
-plugins:
-  - serverless-python-requirements
-  - serverless-wsgi
-
-custom:
-  wsgi:
-    app: app.app
-    packRequirements: false
-  pythonRequirements:
-    dockerizePip: non-linux
-
 provider:
   name: aws
   runtime: python3.6
   stage: ${opt:stage, 'dev'}
   region: ap-northeast-1
-  environment:
-    CLIENT_ID: ${s3:galpi-${self:provider.stage}/client_id}
-    CLIENT_SECRET: ${s3:galpi-${self:provider.stage}/client_secret}
+
+plugins:
+  - serverless-domain-manager
+  - serverless-python-requirements
+  - serverless-wsgi
+
+custom:
+  customDomain:
+    domainName: ${self:custom.domain.${self:provider.stage}}
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  domain:
+    dev: ""
+    staging: staging.galpi.io
+    prod: galpi.io
+  pythonRequirements:
+    dockerizePip: non-linux
+  wsgi:
+    app: app.app
+    packRequirements: false
 
 functions:
   app:
     handler: wsgi.handler
+    environment:
+      CLIENT_ID: ${s3:galpi-${self:provider.stage}/client_id}
+      CLIENT_SECRET: ${s3:galpi-${self:provider.stage}/client_secret}
     events:
       - http: 'ANY /'
       - http: 'ANY {proxy+}'

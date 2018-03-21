@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/yeonghoey/galpi#readme",
   "devDependencies": {
+    "serverless-domain-manager": "^2.3.5",
     "serverless-python-requirements": "^3.3.1",
     "serverless-wsgi": "^1.4.7"
   }

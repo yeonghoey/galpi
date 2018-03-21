@@ -14,9 +14,8 @@ CLIENT_SECRET = os.environ['CLIENT_SECRET']
 
 @app.route("/")
 def index():
-    return render_template('index.html',
-                           client_id=CLIENT_ID,
-                           redirect_uri='http://localhost:5000/auth')
+    # TODO: Specify `state`
+    return render_template('index.html', client_id=CLIENT_ID)
 
 
 @app.route("/auth")
