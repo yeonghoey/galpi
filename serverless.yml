@@ -14,8 +14,11 @@ custom:
 provider:
   name: aws
   runtime: python3.6
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: ap-northeast-1
+  environment:
+    CLIENT_ID: ${s3:galpi-${self:provider.stage}/client_id}
+    CLIENT_SECRET: ${s3:galpi-${self:provider.stage}/client_secret}
 
 functions:
   app:

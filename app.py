@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request
 from flask.json import jsonify
 import requests
@@ -5,8 +7,9 @@ import requests
 
 app = Flask('galpi')
 
-CLIENT_ID = ''
-CLIENT_SECRET = ''
+
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
 
 
 @app.route("/")
