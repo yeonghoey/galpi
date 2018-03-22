@@ -17,6 +17,7 @@ custom:
     stage: ${self:provider.stage}
     createRoute53Record: true
   domain:
+    dev: ''
     staging: staging.api.galpi.io
     prod: api.galpi.io
   pythonRequirements:
