@@ -1,16 +1,9 @@
-import os
-
 from flask import Flask, redirect, render_template, request, session, url_for
 import requests
 
 
-CLIENT_ID = os.environ['CLIENT_ID']
-CLIENT_SECRET = os.environ['CLIENT_SECRET']
-SECRET_KEY = os.environ['SECRET_KEY']
-
-
 app = Flask('galpi')
-app.secret_key = SECRET_KEY
+app.config.from_object('galpi.config')
 
 
 @app.before_request
@@ -21,7 +14,7 @@ def before_request():
 @app.route("/")
 def index():
     # TODO: Specify `state`
-    return render_template('index.html', client_id=CLIENT_ID)
+    return render_template('index.html', client_id=app.config['CLIENT_ID'])
 
 
 @app.route("/auth")
@@ -40,8 +33,8 @@ def exchange(code):
     }
 
     payload = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
+        'client_id': app.config['CLIENT_ID'],
+        'client_secret': app.config['CLIENT_SECRET'],
         'code': code,
     }
 
