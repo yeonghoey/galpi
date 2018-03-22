@@ -14,13 +14,11 @@ plugins:
 custom:
   customDomain:
     domainName: ${self:custom.domain.${self:provider.stage}}
-    basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
   domain:
-    dev: ""
-    staging: staging.galpi.io
-    prod: galpi.io
+    staging: staging.api.galpi.io
+    prod: api.galpi.io
   pythonRequirements:
     dockerizePip: non-linux
   wsgi:
