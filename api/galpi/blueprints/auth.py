@@ -8,7 +8,8 @@ bp = Blueprint('auth', __name__)
 
 @bp.route('/')
 def index():
-    uri, state = prepare_auth_request()
+    redirect_uri = url_for('.exchange', _external=True)
+    uri, state = prepare_auth_request(redirect_uri)
 
     session['state'] = state
     return redirect(uri)

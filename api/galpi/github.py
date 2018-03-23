@@ -8,12 +8,13 @@ from requests.auth import HTTPBasicAuth
 from galpi.config import CLIENT_ID, CLIENT_SECRET
 
 
-def prepare_auth_request():
+def prepare_auth_request(redirect_uri):
     url = 'https://github.com/login/oauth/authorize'
 
     state = secrets.token_urlsafe(16)
     payload = {
         'client_id': CLIENT_ID,
+        'redirect_uri': redirect_uri,
         'state': state,
     }
 
