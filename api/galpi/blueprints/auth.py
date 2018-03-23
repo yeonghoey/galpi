@@ -1,21 +1,28 @@
-from flask import (
-    Blueprint, redirect, render_template, request, session, url_for)
+from flask import Blueprint, redirect, request, session, url_for
 
-from galpi.core import config, exchange
+from galpi.github import prepare_auth_request, acquire_token
 
 
 bp = Blueprint('auth', __name__)
 
 
 @bp.route('/')
-def github_request():
-    # TODO: Specify `state`
-    return render_template('index.html', client_id=config('CLIENT_ID'))
+def index():
+    uri, state = prepare_auth_request()
+
+    session['state'] = state
+    return redirect(uri)
 
 
 @bp.route('/exchange')
-def github_exchange():
-    code = request.args['code']
-    access_token = exchange(code)
+def exchange():
+    state = request.args.get('state')
+    if state != session['state']:
+        # TODO: handle this properly
+        return None
+
+    code = request.args.get('code')
+    access_token = acquire_token(code)
+
     session['access_token'] = access_token
     return redirect(url_for('root.index'))
