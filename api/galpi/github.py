@@ -1,8 +1,11 @@
+from functools import wraps
 import secrets
 
+from flask import session
 import requests
+from requests.auth import HTTPBasicAuth
 
-from galpi.core import config
+from galpi.config import CLIENT_ID, CLIENT_SECRET
 
 
 def prepare_auth_request():
@@ -10,7 +13,7 @@ def prepare_auth_request():
 
     state = secrets.token_urlsafe(16)
     payload = {
-        'client_id': config('CLIENT_ID'),
+        'client_id': CLIENT_ID,
         'state': state,
     }
 
@@ -28,27 +31,30 @@ def acquire_token(code):
     }
 
     payload = {
-        'client_id': config('CLIENT_ID'),
-        'client_secret': config('CLIENT_SECRET'),
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
         'code': code,
     }
 
     res = requests.post(url, headers=headers, data=payload)
+    return res.json()['access_token']
 
-    try:
-        res.raise_for_status()
-    except requests.HTTPError:
-        # TODO: Handle error properly
-        return None
 
-    try:
-        d = res.json()
-    except ValueError:
-        # TODO: Handle error properly
-        return None
+def pass_login(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        t = session.get('access_token')
+        login = (acquire_login(t) if t is not None else
+                 None)
+        return f(login, *args, **kwargs)
+    return wrapped
 
-    try:
-        return d['access_token']
-    except KeyError:
-        # TODO: Handle error properly
-        return None
+
+def acquire_login(access_token):
+    url_fmt = 'https://api.github.com/applications/%s/tokens/%s'
+    url = url_fmt % (CLIENT_ID, access_token)
+    auth = HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
+
+    res = requests.get(url, auth=auth)
+    user = res.json().get('user', {})
+    return user.get('login')

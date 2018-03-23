@@ -1,13 +1,9 @@
-import os
-
-
-def declare(name):
-    globals()[name] = os.environ[name]
+from os import environ
 
 
 # Builtin Configs
-declare('SECRET_KEY')
+SECRET_KEY = environ['SECRET_KEY']
 
 # Custom Configs
-declare('CLIENT_ID')
-declare('CLIENT_SECRET')
+CLIENT_ID = environ['CLIENT_ID']
+CLIENT_SECRET = environ['CLIENT_SECRET']
