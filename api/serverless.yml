@@ -3,7 +3,7 @@ service: galpi
 provider:
   name: aws
   runtime: python3.6
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage}
   region: ap-northeast-1
 
 plugins:
@@ -13,8 +13,8 @@ plugins:
 
 custom:
   customDomain:
-    domainName: ${self:custom.domain.${self:provider.stage}}
-    stage: ${self:provider.stage}
+    domainName: ${self:custom.domain.${opt:stage}}
+    stage: ${opt:stage}
     createRoute53Record: true
   domain:
     dev: ''
@@ -30,9 +30,9 @@ functions:
   app:
     handler: wsgi.handler
     environment:
-      CLIENT_ID: ${s3:galpi-${self:provider.stage}/client_id}
-      CLIENT_SECRET: ${s3:galpi-${self:provider.stage}/client_secret}
-      SECRET_KEY: ${s3:galpi-${self:provider.stage}/secret_key}
+      CLIENT_ID: ${ssm:/galpi/${opt:stage}/client_id}
+      CLIENT_SECRET: ${ssm:/galpi/${opt:stage}/client_secret}
+      SECRET_KEY: ${ssm:/galpi/${opt:stage}/secret_key}
     events:
       - http: 'ANY /'
       - http: 'ANY {proxy+}'
