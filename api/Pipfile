@@ -9,6 +9,7 @@ name = "pypi"
 
 flask = "*"
 requests = "*"
+"boto3" = "*"
 
 
 [dev-packages]
