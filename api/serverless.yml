@@ -21,6 +21,7 @@ plugins:
   - serverless-domain-manager
   - serverless-python-requirements
   - serverless-wsgi
+  - serverless-dynamodb-local
 
 custom:
   customDomain:
@@ -31,6 +32,9 @@ custom:
     dev: ''
     staging: staging.api.galpi.io
     prod: api.galpi.io
+  dynamodb:
+    start:
+      migrate: true
   pythonRequirements:
     dockerizePip: non-linux
   wsgi:
