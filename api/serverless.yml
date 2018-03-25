@@ -35,6 +35,13 @@ custom:
   dynamodb:
     start:
       migrate: true
+      seed: true
+    seed:
+      dev:
+        sources:
+          - table: ${self:service}-${opt:stage}-items
+            sources: [./dev/items.json]
+
   pythonRequirements:
     dockerizePip: non-linux
   wsgi:
@@ -48,6 +55,7 @@ functions:
       CLIENT_ID: ${ssm:/galpi/${opt:stage}/client_id}
       CLIENT_SECRET: ${ssm:/galpi/${opt:stage}/client_secret}
       SECRET_KEY: ${ssm:/galpi/${opt:stage}/secret_key}
+      TABLE_PREFIX: ${self:service}-${opt:stage}
     events:
       - http: 'ANY /'
       - http: 'ANY {proxy+}'

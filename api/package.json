@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pipenv run sls wsgi serve --stage dev"
+    "dev": "sls dynamodb start --stage dev &> db.log & pipenv run sls wsgi serve --stage dev ; pkill -INT -f dynamodb"
   },
   "repository": {
     "type": "git",
