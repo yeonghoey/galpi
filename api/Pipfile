@@ -10,6 +10,7 @@ name = "pypi"
 flask = "*"
 requests = "*"
 "boto3" = "*"
+flask-cors = "*"
 
 
 [dev-packages]
