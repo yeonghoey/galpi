@@ -1,4 +1,5 @@
 import boto3
+from boto3.dynamodb.conditions import Key
 from flask import g
 from werkzeug.local import LocalProxy
 from galpi.config import IS_OFFLINE, TABLE_PREFIX
@@ -27,3 +28,9 @@ def get_item(user, keyword):
     res = items.get_item(Key={'user': user, 'keyword': keyword})
     # TODO: Handle errors and other unexpected cases
     return res.get('Item', {})
+
+
+def get_user_items(user):
+    res = items.query(KeyConditionExpression=Key('user').eq(user))
+    # TODO: Handle errors and other unexpected cases
+    return res.get('Items', [])
