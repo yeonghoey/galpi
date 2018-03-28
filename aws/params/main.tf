@@ -1,12 +1,12 @@
 resource "aws_ssm_parameter" "client_id" {
-  name      = "/galpi/${var.stage}/client_id"
-  type      = "String"
-  value     = "${var.client_id}"
+  name  = "/galpi/${var.stage}/client_id"
+  type  = "String"
+  value = "${var.client_id}"
 }
 
 resource "aws_ssm_parameter" "client_secret" {
-  name      = "/galpi/${var.stage}/client_secret"
-  type      = "String"
+  name = "/galpi/${var.stage}/client_secret"
+  type = "String"
 
   # Manage this value manually to keep it secret.
   value     = "<secret>"
