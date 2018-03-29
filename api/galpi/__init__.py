@@ -10,7 +10,7 @@ app.secret_key = SECRET_KEY
 app.register_blueprint(root.bp)
 app.register_blueprint(auth.bp, url_prefix='/auth')
 
-CORS(app, origins=CORS_ORIGIN)
+CORS(app, origins=CORS_ORIGIN, supports_credentials=True)
 
 
 @app.before_request
