@@ -3,7 +3,7 @@ import Router from 'vue-router';
 
 import Home from '@/components/Home';
 import User from '@/components/User';
-import Keyword from '@/components/Keyword';
+import Item from '@/components/Item';
 
 Vue.use(Router);
 
@@ -16,15 +16,15 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/:username',
+      path: '/:user',
       name: 'User',
       component: User,
       props: true,
     },
     {
-      path: '/:username/:keyword',
-      name: 'Keyword',
-      component: Keyword,
+      path: '/:user/:name',
+      name: 'Item',
+      component: Item,
       props: true,
     },
   ],

@@ -1,4 +1,4 @@
 [
-  {"user": "yeonghoey", "keyword": "g", "value": "https://google.com"},
-  {"user": "yeonghoey", "keyword": "y", "value": "https://youtube.com"}
+  {"owner": "yeonghoey", "name": "g", "value": "https://google.com"},
+  {"owner": "yeonghoey", "name": "y", "value": "https://youtube.com"}
 ]

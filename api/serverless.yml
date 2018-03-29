@@ -70,14 +70,14 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-items
         AttributeDefinitions:
-          - AttributeName: user
+          - AttributeName: owner
             AttributeType: S
-          - AttributeName: keyword
+          - AttributeName: name
             AttributeType: S
         KeySchema:
-          - AttributeName: user
+          - AttributeName: owner
             KeyType: HASH
-          - AttributeName: keyword
+          - AttributeName: name
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

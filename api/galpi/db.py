@@ -24,8 +24,9 @@ db = LocalProxy(get_db)
 items = LocalProxy(lambda: db.Table(f'{TABLE_PREFIX}-items'))
 
 
+# Refactor this
 def get_item(user, keyword):
-    res = items.get_item(Key={'user': user, 'keyword': keyword})
+    res = items.get_item(Key={'owner': user, 'name': keyword})
     # TODO: Handle errors and other unexpected cases
     return res.get('Item', {})
 
