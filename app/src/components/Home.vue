@@ -5,6 +5,7 @@
     <router-link :to="{ name: 'User', params: { username: 'yeonghoey' } }">yeonghoey</router-link>
     <router-link :to="{ name: 'User', params: { username: 'naviplay' } }">naviplay</router-link>
     <button v-on:click="greet">Greet</button>
+    <p> {{ res }} </p>
   </div>
 </template>
 
@@ -14,13 +15,15 @@ import api from '@/core/api';
 export default {
   name: 'Home',
   data() {
-    return {};
+    return {
+      res: {},
+    };
   },
 
   methods: {
     greet() {
       api.get('/').then((res) => {
-        console.log(res);
+        this.res = res;
       });
     },
   },
