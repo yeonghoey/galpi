@@ -8,6 +8,7 @@ import Keyword from '@/components/Keyword';
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
