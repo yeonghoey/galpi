@@ -15,6 +15,5 @@ def index():
 @bp.route('/<user>/', defaults={'pq': None})
 @bp.route('/<user>/<path:pq>')
 def query(user, pq):
-    items = db.query(user, pq)
-    payload = {'owner': user, 'items': items}
+    payload = db.query(user, pq)
     return jsonify(payload)
