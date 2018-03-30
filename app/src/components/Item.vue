@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h1></h1>
+    <h1>{{ target }}</h1>
+    <ul>
+      <li v-for="item in items" :key="item">
+        {{ item.name }} {{ item.to }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -13,14 +18,42 @@ export default {
 
   data() {
     return {
+      items: [],
+      errors: [],
     };
   },
 
-  mounted() {
+  computed: {
+    target() {
+      if (this.name === undefined) {
+        return undefined;
+      }
+      if (this.name.endsWith('/')) {
+        return undefined;
+      }
+      const item = this.items.find(x => x.name === this.name);
+      if (item === undefined) {
+        return undefined;
+      }
+      return item.to;
+    },
+  },
+
+  watch: {
+    target(to) {
+      if (to !== undefined) {
+        window.location.href = to;
+      }
+    },
+  },
+
+  created() {
     api.get(this.$route.path)
-      .then((res) => {
-        // TODO: Handle exceptional cases
-        window.location.href = res.data.value;
+      .then((response) => {
+        this.items = response.data.items;
+      })
+      .catch((error) => {
+        this.errors.push(error);
       });
   },
 };
