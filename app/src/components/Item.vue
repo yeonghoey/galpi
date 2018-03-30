@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>{{ target }}</h1>
     <ul>
       <li v-for="item in items" :key="item">
         {{ item.name }} {{ item.to }}
