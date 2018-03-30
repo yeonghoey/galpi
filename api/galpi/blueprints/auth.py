@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, request, session, url_for
 
-from galpi.github import prepare_auth_request, acquire_token
+from galpi.github import prepare_auth_request, acquire_token, acquire_login
 
 
 bp = Blueprint('auth', __name__)
@@ -24,6 +24,8 @@ def exchange():
 
     code = request.args.get('code')
     access_token = acquire_token(code)
+    login = acquire_loging(access_token)
 
+    session['login'] = login
     session['access_token'] = access_token
     return redirect(url_for('root.index'))

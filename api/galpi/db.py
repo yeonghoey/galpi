@@ -24,14 +24,37 @@ db = LocalProxy(get_db)
 items = LocalProxy(lambda: db.Table(f'{TABLE_PREFIX}-items'))
 
 
-# Refactor this
-def get_item(user, keyword):
-    res = items.get_item(Key={'owner': user, 'name': keyword})
-    # TODO: Handle errors and other unexpected cases
-    return res.get('Item', {})
+def query(user, pq):
+    if pq is None:
+        # Returns all data for UI
+        return query_all(user)
+
+    assert isinstance(pq, str)
+    if pq.endswith('/'):
+        name, parent = pq[:-1], pq
+        # Returns all data for UI
+        return query_item(user, name) + query_children(user, parent)
+    else:
+        name, parent = pq, f'{pq}/'
+        # Returns only 'p' if exists, children for UI otherwise
+        return query_item(user, name) or query_children(user, parent)
 
 
-def get_user_items(user):
-    res = items.query(KeyConditionExpression=Key('user').eq(user))
-    # TODO: Handle errors and other unexpected cases
+def query_all(user):
+    key = Key('owner').eq(user)
+    res = items.query(KeyConditionExpression=key)
+    return res.get('Items', [])
+
+
+def query_item(user, name):
+    key = {'owner': user, 'name': name}
+    res = items.get_item(Key=key)
+    item = res.get('Item', None)
+    return ([item] if item is not None else [])
+
+
+def query_children(user, parent):
+    cond = (Key('owner').eq(user) &
+            Key('name').begins_with(parent))
+    res = items.query(KeyConditionExpression=cond)
     return res.get('Items', [])

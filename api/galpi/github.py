@@ -41,16 +41,6 @@ def acquire_token(code):
     return res.json()['access_token']
 
 
-def pass_login(f):
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        t = session.get('access_token')
-        login = (acquire_login(t) if t is not None else
-                 None)
-        return f(login, *args, **kwargs)
-    return wrapped
-
-
 def acquire_login(access_token):
     url_fmt = 'https://api.github.com/applications/%s/tokens/%s'
     url = url_fmt % (CLIENT_ID, access_token)

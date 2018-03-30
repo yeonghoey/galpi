@@ -1,27 +1,20 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, session
 
-from galpi.db import get_item, get_user_items
-from galpi.github import pass_login
+from galpi import db
 
 
 bp = Blueprint('root', __name__)
 
 
 @bp.route('/')
-@pass_login
-def index(login):
+def index():
+    login = session.get('login')
     return jsonify({'login': login})
 
 
-@bp.route('/<user>/')
-@pass_login
-def user(login, user):
-    items = get_user_items(user)
-    payload = {'user': user, 'items': items}
+@bp.route('/<user>/', defaults={'pq': None})
+@bp.route('/<user>/<path:pq>')
+def query(user, pq):
+    items = db.query(user, pq)
+    payload = {'owner': user, 'items': items}
     return jsonify(payload)
-
-
-@bp.route('/<user>/<keyword>')
-@pass_login
-def item(login, user, keyword):
-    return jsonify(get_item(user, keyword))
