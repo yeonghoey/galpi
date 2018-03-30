@@ -1,8 +1,10 @@
 <template>
   <div>
+    <h1>{{ user }} / {{ name }}</h1>
+    <p>{{item.to}}</p>
     <ul>
-      <li v-for="item in items" :key="item">
-        {{ item.name }} {{ item.to }}
+      <li v-for="child in children" :key="child">
+        {{ child.name }} {{ child.to }}
       </li>
     </ul>
   </div>
@@ -13,43 +15,39 @@ import api from '@/core/api';
 
 export default {
   name: 'Item',
+
   props: ['user', 'name'],
 
   data() {
     return {
-      items: [],
+      item: {},
+      children: [],
       errors: [],
     };
   },
 
   computed: {
-    target() {
-      if (this.name === undefined) {
-        return undefined;
-      }
-      if (this.name.endsWith('/')) {
-        return undefined;
-      }
-      const item = this.items.find(x => x.name === this.name);
-      if (item === undefined) {
-        return undefined;
-      }
-      return item.to;
+    pq() {
+      return this.$route.path;
     },
   },
 
   watch: {
-    target(to) {
-      if (to !== undefined) {
-        window.location.href = to;
+    item(val) {
+      if (this.pq.endsWith('/')) {
+        return;
+      }
+      if (val.to !== undefined) {
+        window.location.href = val.to;
       }
     },
   },
 
   created() {
-    api.get(this.$route.path)
+    api.get(this.pq)
       .then((response) => {
-        this.items = response.data.items;
+        this.item = response.data.item;
+        this.children = response.data.children;
       })
       .catch((error) => {
         this.errors.push(error);
