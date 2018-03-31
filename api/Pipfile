@@ -4,14 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
+Flask = "*"
 requests = "*"
 "boto3" = "*"
-flask-cors = "*"
+Flask-Cors = "*"
 
 [dev-packages]
 "flake8" = "*"
 pytest = "*"
+moto = "*"
 
 [requires]
 python_version = "3.6"
