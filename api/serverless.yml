@@ -24,40 +24,47 @@ plugins:
   - serverless-dynamodb-local
 
 custom:
+  name: ${self:service}-${opt:stage}
+
+  # Stage
+  _base: &base
+    domain: '<unused>'
+    environment: &environment
+      SECRET_KEY: ${ssm:/galpi/${opt:stage}/secret_key}
+      CLIENT_ID: ${ssm:/galpi/${opt:stage}/client_id}
+      CLIENT_SECRET: ${ssm:/galpi/${opt:stage}/client_secret}
+      TABLE_PREFIX: ${self:custom.name}
+  dev:
+    <<: *base
+    environment:
+      <<: *environment
+      CORS_ORIGIN: 'http://localhost:8080'
+    dynamodb_seed:
+      - table: ${self:custom.name}-items
+        sources:
+          - ./${opt:stage}/items.json
+
+  # Plugin
   customDomain:
-    domainName: ${self:custom.domain.${opt:stage}}
+    domainName: ${self:custom.${opt:stage}.domain}
     stage: ${opt:stage}
     createRoute53Record: true
-  domain:
-    dev: ''
-    staging: staging.api.galpi.io
-    prod: api.galpi.io
-  corsOrigin:
-    dev: 'http://localhost:8080'
-  dynamodb:
-    start:
-      migrate: true
-    seed:
-      dev:
-        sources:
-          - table: ${self:service}-${opt:stage}-items
-            sources: [./dev/items.json]
-
   pythonRequirements:
     dockerizePip: non-linux
   wsgi:
     app: app.app
     packRequirements: false
+  dynamodb:
+    start:
+      migrate: true
+    seed:
+      main:
+        sources: ${self:custom.${opt:stage}.dynamodb_seed}
 
 functions:
   app:
     handler: wsgi.handler
-    environment:
-      SECRET_KEY: ${ssm:/galpi/${opt:stage}/secret_key}
-      CLIENT_ID: ${ssm:/galpi/${opt:stage}/client_id}
-      CLIENT_SECRET: ${ssm:/galpi/${opt:stage}/client_secret}
-      CORS_ORIGIN: ${self:custom.corsOrigin.${opt:stage}}
-      TABLE_PREFIX: ${self:service}-${opt:stage}
+    environment: ${self:custom.${opt:stage}.environment}
     events:
       - http: 'ANY /'
       - http: 'ANY {proxy+}'
@@ -67,7 +74,7 @@ resources:
     Items:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:service}-${opt:stage}-items
+        TableName: ${self:custom.name}-items
         AttributeDefinitions:
           - AttributeName: owner
             AttributeType: S

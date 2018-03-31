@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/yeonghoey/galpi#readme",
   "devDependencies": {
+    "serverless": "^1.26.1",
     "serverless-domain-manager": "^2.3.5",
     "serverless-dynamodb-local": "^0.2.28",
     "serverless-python-requirements": "^3.3.1",
