@@ -5,6 +5,8 @@ from os import environ
 IS_OFFLINE = environ.get('IS_OFFLINE') is not None
 
 # Builtin Configs
+TESTING = environ.get('TESTING', False)
+
 SECRET_KEY = environ['SECRET_KEY']
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = not IS_OFFLINE
