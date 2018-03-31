@@ -151,3 +151,5 @@ admin.env
 _meta
 .serverless
 
+# pytest
+.pytest_cache
