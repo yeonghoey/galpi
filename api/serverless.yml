@@ -47,7 +47,7 @@ custom:
   pythonRequirements:
     dockerizePip: non-linux
   wsgi:
-    app: galpi.app
+    app: app.app
     packRequirements: false
 
 functions:
