@@ -24,7 +24,7 @@ def exchange():
 
     code = request.args.get('code')
     access_token = acquire_token(code)
-    login = acquire_loging(access_token)
+    login = acquire_login(access_token)
 
     session['login'] = login
     session['access_token'] = access_token
