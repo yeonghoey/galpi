@@ -42,7 +42,7 @@ custom:
     dynamodb_seed:
       - table: ${self:custom.name}-items
         sources:
-          - ./${opt:stage}/items.json
+          - ./dev/items.json
 
   # Plugin
   customDomain:
