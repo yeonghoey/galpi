@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, session
 
-from galpi import db
+from galpi.db.items import query
 
 
 bp = Blueprint('root', __name__)
@@ -14,6 +14,6 @@ def index():
 
 @bp.route('/<user>/', defaults={'pq': None})
 @bp.route('/<user>/<path:pq>')
-def query(user, pq):
-    payload = db.query(user, pq)
+def lookup(user, pq):
+    payload = query(user, pq)
     return jsonify(payload)
