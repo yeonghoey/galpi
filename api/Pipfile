@@ -12,7 +12,6 @@ Flask-Cors = "*"
 [dev-packages]
 "flake8" = "*"
 pytest = "*"
-moto = "*"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
