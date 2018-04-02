@@ -36,6 +36,9 @@ def stop_dynamodb(proc):
     pgid = os.getpgid(proc.pid)
     os.killpg(pgid, SIGINT)
 
+    # Ensure that it completely ends
+    proc.communicate()
+
 
 @pytest.fixture
 def app(monkeypatch):
