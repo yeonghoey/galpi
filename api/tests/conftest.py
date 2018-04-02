@@ -1,7 +1,7 @@
 import os
-from signal import SIGINT
-from subprocess import Popen, PIPE
+import sys
 
+import pexpect
 import pytest
 
 from galpi import create_app
@@ -9,35 +9,20 @@ from galpi import create_app
 
 @pytest.fixture(scope='session', autouse=True)
 def dynamodb():
-    proc = start_dynamodb()
+    child = start_dynamodb()
     yield
-    stop_dynamodb(proc)
+    child.close()
 
 
 def start_dynamodb():
     sls = os.path.join(pytest.config.rootdir, 'node_modules/.bin/sls')
-    proc = Popen([sls, 'dynamodb', 'start', '--stage', 'dev'],
-                 stdout=PIPE,
-                 start_new_session=True)
-
+    child = pexpect.spawn(sls, ['dynamodb', 'start', '--stage', 'dev'])
+    child.logfile = sys.stdout
     # Depend on serverless-dynamodb-local's migration feature.
     # It prints out lines like 'Serverless: DynamoDB - created table <table>'
     # So, just wait for some of the message to show up.
-    for bs in proc.stdout:
-        line = bs.decode()
-        if 'created table' in line:
-            break
-    return proc
-
-
-def stop_dynamodb(proc):
-    # sls dynamodb creates several subprocesses.
-    # To stop all of them, send the signal to the process group.
-    pgid = os.getpgid(proc.pid)
-    os.killpg(pgid, SIGINT)
-
-    # Ensure that it completely ends
-    proc.communicate()
+    child.expect(r'DynamoDB - created table (.+)')
+    return child
 
 
 @pytest.fixture
