@@ -66,6 +66,8 @@ class TestClient():
             setattr(self, m, partial(self.handle, m))
 
     def handle(self, method, *args, **kwargs):
+        kwargs.setdefault('follow_redirects', True)
+
         make_request = getattr(self.client, method)
         response = make_request(*args, **kwargs)
         payload = json.loads(response.data)
