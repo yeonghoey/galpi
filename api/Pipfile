@@ -19,6 +19,7 @@ flask-cors = "*"
 pytest = "*"
 "e1839a8" = {path = ".", editable = true}
 pexpect = "*"
+pytest-watch = "*"
 
 
 [requires]
