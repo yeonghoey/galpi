@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import Blueprint, jsonify, session
 
 from galpi.db.items import query
@@ -17,3 +18,8 @@ def index():
 def lookup(user, pq):
     payload = query(user, pq)
     return jsonify(payload)
+
+
+@bp.route('/<user>/<path:name>', methods=['PUT'])
+def add_item(user, name):
+    return ('', HTTPStatus.CREATED)

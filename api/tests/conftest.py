@@ -70,13 +70,25 @@ class TestClient():
 
         make_request = getattr(self.client, method)
         response = make_request(*args, **kwargs)
-        payload = json.loads(response.data)
-        self.history.append(payload)
-        return payload
+        self.history.append(response)
+        return response
 
     @property
     def last(self):
         return self.history[-1]
+
+    @property
+    def json(self):
+        data = self.last.data
+        # data can be '' or {}, None, etc.
+        if data:
+            return json.loads(data)
+        else:
+            return None
+
+    @property
+    def status(self):
+        return self.last.status_code
 
 
 @pytest.fixture
