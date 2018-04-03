@@ -1,5 +1,6 @@
 import os
 import sys
+import uuid
 
 import pexpect
 import pytest
@@ -49,3 +50,14 @@ def app(monkeypatch):
 def client(app):
     with app.test_client() as c:
         yield c
+
+
+@pytest.fixture
+def user():
+    """Generates a unique user name.
+
+    Since running a single database instance, it is necessary to use unique
+    names across tests, othwerwise therer would be some collisions.
+    """
+    # TODO: Adapt when implements user name patterns and rules
+    return uuid.uuid4()

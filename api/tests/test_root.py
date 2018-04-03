@@ -1,4 +1,9 @@
-def test_foo(client):
-    response = client.get('/yeonghoey', follow_redirects=True)
-    print(response)
-    assert False
+import json
+
+
+def test_user(client, user):
+    response = client.get(f'/{user}', follow_redirects=True)
+    assert json.loads(response.data) == {
+        'item': {},
+        'children': []
+    }
