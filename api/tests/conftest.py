@@ -17,9 +17,11 @@ def dynamodb():
 
 def start_dynamodb():
     sls = os.path.join(pytest.config.rootdir, 'node_modules/.bin/sls')
-    child = pexpect.spawn(sls, ['dynamodb', 'start', '--stage', 'dev'])
-    child.timeout = None
-    child.logfile = sys.stdout
+    child = pexpect.spawn(sls,
+                          ['dynamodb', 'start', '--stage', 'dev'],
+                          encoding='utf-8',
+                          logfile=sys.stdout,
+                          timeout=None)
     # Depend on serverless-dynamodb-local's migration feature.
     # It prints out lines like 'Serverless: DynamoDB - created table <table>'
     # So, just wait for some of the message to show up.
