@@ -3,6 +3,12 @@ from boto3.dynamodb.conditions import Key
 from galpi.db.tables import items
 
 
+def put(user, name, to):
+    item = {'owner': user, 'name': name, 'to': to}
+    response = items.put_item(Item=item)
+    return response
+
+
 def query(user, pq):
     if pq is None:
         return {
