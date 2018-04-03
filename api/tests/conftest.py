@@ -1,3 +1,5 @@
+from functools import partial
+import json
 import os
 import sys
 import uuid
@@ -48,10 +50,37 @@ def app(monkeypatch):
     yield app
 
 
+class TestClient():
+    def __init__(self, client):
+        self.client = client
+        self.history = []
+
+        for m in ['get',
+                  'patch',
+                  'post',
+                  'head',
+                  'put',
+                  'delete',
+                  'options',
+                  'trace']:
+            setattr(self, m, partial(self.handle, m))
+
+    def handle(self, method, *args, **kwargs):
+        make_request = getattr(self.client, method)
+        response = make_request(*args, **kwargs)
+        payload = json.loads(response.data)
+        self.history.append(payload)
+        return payload
+
+    @property
+    def last(self):
+        return self.history[-1]
+
+
 @pytest.fixture
 def client(app):
     with app.test_client() as c:
-        yield c
+        yield TestClient(c)
 
 
 @pytest.fixture
