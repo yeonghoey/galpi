@@ -1,27 +1,19 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-flask = "*"
+Flask = "*"
 requests = "*"
 "boto3" = "*"
-flask-cors = "*"
-
+Flask-Cors = "*"
 
 [dev-packages]
-
 "flake8" = "*"
 pytest = "*"
 "e1839a8" = {path = ".", editable = true}
-pexpect = "*"
 pytest-watch = "*"
 
-
 [requires]
-
 python_version = "3.6"
