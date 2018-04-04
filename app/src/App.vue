@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <h1>Galpi</h1>
+    <a href="#" class="btn btn-block btn-social btn-github">
+      <span class="fa fa-github"></span> Sign in with GitHub
+    </a>
     <router-view/>
   </div>
 </template>
@@ -12,7 +16,6 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
