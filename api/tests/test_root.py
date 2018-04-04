@@ -6,7 +6,7 @@ def test_user(client, user):
     assert client.status == HTTPStatus.OK
     assert client.json == {'item': {}, 'children': []}
 
-    client.put(f'/{user}/a', json={'to': 'A'})
+    client.put(f'/{user}/a', json={'to': 'http://example.com'})
     assert client.status == HTTPStatus.CREATED
     assert client.json is None
 
@@ -18,7 +18,21 @@ def test_user(client, user):
             {
                 'owner': user,
                 'name': 'a',
-                'to': 'A',
+                'to': 'http://example.com',
             }
         ]
     }
+
+
+def test_pq(client, user):
+    data = client.batch_put(user,
+                            '''a     | a.com
+                               a/1   | a1.com
+                               a/2   | a2.com
+                               a/b/1 | ab1.com
+                               a/b/2 | ab2.com
+                               x/y/z | xyz.com''')
+
+    client.get(f'/{user}', ok=True)
+    client.get(f'/{user}/', ok=True)
+    assert client[-1].json == client.json
