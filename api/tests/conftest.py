@@ -46,6 +46,13 @@ class TestClient():
     def handle(self, method, *args, **kwargs):
         kwargs.setdefault('follow_redirects', True)
 
+        # werkzeug.test.EnvironBuilder DOES NOT support json.
+        # So provide `json` keyword for simplicity.
+        json_d = kwargs.pop('json', None)
+        if json_d is not None:
+            kwargs.setdefault('content_type', 'application/json')
+            kwargs.setdefault('data', json.dumps(json_d))
+
         make_request = getattr(self.client, method)
         response = make_request(*args, **kwargs)
         self.history.append(response)
@@ -83,4 +90,4 @@ def user():
     names across tests, othwerwise therer would be some collisions.
     """
     # TODO: Adapt when implements user name patterns and rules
-    return uuid.uuid4()
+    return str(uuid.uuid4())

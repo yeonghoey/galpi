@@ -27,6 +27,5 @@ def put(user, pq):
     # TODO: auth check
     payload = request.get_json()
     to = payload['to']
-
     items.put(user, name, to)
     return ('', HTTPStatus.CREATED)
