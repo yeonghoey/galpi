@@ -12,7 +12,7 @@ def put(user, name, to):
 def query(user, pq):
     if pq is None:
         return {
-            'item': {},
+            'self': {},
             'children': query_all(user),
         }
 
@@ -20,7 +20,7 @@ def query(user, pq):
 
     if pq.endswith('/'):
         return {
-            'item': query_item(user, name=pq[:-1]),
+            'self': query_item(user, name=pq[:-1]),
             'children': query_children(user, parent=pq),
         }
     else:
@@ -29,7 +29,7 @@ def query(user, pq):
         # because the client will be redirected right away.
         children = ([] if item else
                     query_children(user, parent=f'{pq}/'))
-        return {'item': item, 'children': children}
+        return {'self': item, 'children': children}
 
 
 def query_all(user):

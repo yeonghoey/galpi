@@ -1,29 +1,6 @@
 from http import HTTPStatus
 
 
-def test_user(client, user):
-    client.get(f'/{user}')
-    assert client.status == HTTPStatus.OK
-    assert client.json == {'item': {}, 'children': []}
-
-    client.put(f'/{user}/a', json={'to': 'http://example.com'})
-    assert client.status == HTTPStatus.CREATED
-    assert client.json is None
-
-    client.get(f'/{user}')
-    assert client.status == HTTPStatus.OK
-    assert client.json == {
-        'item': {},
-        'children': [
-            {
-                'owner': user,
-                'name': 'a',
-                'to': 'http://example.com',
-            }
-        ]
-    }
-
-
 def test_pq(client, user):
     items = client.batch_put(user, '''
     a     | a.com
@@ -37,6 +14,31 @@ def test_pq(client, user):
     client.get(f'/{user}/', ok=True)
     assert client[-1].json == client.json
     assert client.json == {
-        'item': {},
+        'self': {},
         'children': list(items.values())
     }
+
+    # Requests a redirect query, (so returns no children)
+    client.get(f'/{user}/a', ok=True)
+    assert client.json == {'self': items['a'], 'children': []}
+
+    # Requests a list query, includes the item itself
+    client.get(f'/{user}/a/', ok=True)
+    assert client.json == {
+        'self': items['a'],
+        'children': [items[n] for n in 'a/1;a/2;a/b/1;a/b/2'.split(';')]
+    }
+
+    # Requests a redirect query, but fallback to a list query
+    client.get(f'/{user}/a/b', ok=True)
+    client.get(f'/{user}/a/b/', ok=True)
+    assert client.json == client[-1].json == {
+        'self': {},
+        'children': [items[n] for n in 'a/b/1;a/b/2'.split(';')]
+    }
+
+
+def test_put(client, user):
+    client.put(f'/{user}/a', json={'to': 'http://example.com'})
+    assert client.status == HTTPStatus.CREATED
+    assert client.json is None
