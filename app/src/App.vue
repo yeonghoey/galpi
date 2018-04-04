@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Galpi</h1>
     <a href="#" class="btn btn-block btn-social btn-github">
       <span class="fa fa-github"></span> Sign in with GitHub
     </a>
@@ -9,6 +8,8 @@
 </template>
 
 <script>
+import Navbar from '@/components/Navbar';
+
 export default {
   name: 'App',
 };
