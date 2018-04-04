@@ -32,10 +32,24 @@ def test_pq(client, user):
     # Requests a redirect query, but fallback to a list query
     client.get(f'/{user}/a/b', ok=True)
     client.get(f'/{user}/a/b/', ok=True)
-    assert client.json == client[-1].json == {
-        'self': {},
-        'children': [items[n] for n in 'a/b/1;a/b/2'.split(';')]
-    }
+    assert (client[-1].json ==
+            client.json == {
+                'self': {},
+                'children': [items[n] for n in 'a/b/1;a/b/2'.split(';')]
+            })
+
+    # Same goes even if the direct child does not exist
+    client.get(f'/{user}/x', ok=True)
+    client.get(f'/{user}/x/', ok=True)
+    client.get(f'/{user}/x/y', ok=True)
+    client.get(f'/{user}/x/y/', ok=True)
+    assert (client[-3].json ==
+            client[-2].json ==
+            client[-1].json ==
+            client.json == {
+                'self': {},
+                'children': [items['x/y/z']]
+            })
 
 
 def test_put(client, user):
