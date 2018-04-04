@@ -74,14 +74,13 @@ class TestClient():
 
     def batch_put(self, user, data_string):
         lines = data_string.strip().splitlines()
-        data = {}
+        items = {}
         for l in lines:
             a, b = l.split('|')
             name, to = a.strip(), b.strip()
-
             self.put(f'/{user}/{name}', json={'to': to}, ok=True)
-            data[name] = {'owner': user, 'name': name, 'to': to}
-        return data
+            items[name] = {'owner': user, 'name': name, 'to': to}
+        return items
 
     @property
     def last(self):
