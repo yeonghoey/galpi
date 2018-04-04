@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ user }} / {{ name }}</h1>
-    <p>{{item.to}}</p>
+    <p>{{ self.to }}</p>
     <ul>
       <li v-for="child in children" :key="child">
         {{ child.name }} {{ child.to }}
@@ -20,7 +20,7 @@ export default {
 
   data() {
     return {
-      item: {},
+      self: {},
       children: [],
       errors: [],
     };
@@ -33,7 +33,7 @@ export default {
   },
 
   watch: {
-    item(val) {
+    self(val) {
       if (this.pq.endsWith('/')) {
         return;
       }
@@ -46,7 +46,7 @@ export default {
   created() {
     api.get(this.pq)
       .then((response) => {
-        this.item = response.data.item;
+        this.self = response.data.self;
         this.children = response.data.children;
       })
       .catch((error) => {
