@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from flask import Blueprint, jsonify, session
+from flask import Blueprint, jsonify, request, session
 
 from galpi.db import items
 
@@ -8,19 +8,25 @@ bp = Blueprint('root', __name__)
 
 
 @bp.route('/')
-def index():
+def home():
     login = session.get('login')
     return jsonify({'login': login})
 
 
 @bp.route('/<user>/', defaults={'pq': None})
 @bp.route('/<user>/<path:pq>')
-def lookup(user, pq):
+def query(user, pq):
     payload = items.query(user, pq)
     return jsonify(payload)
 
 
-@bp.route('/<user>/<path:name>', methods=['PUT'])
-def add_item(user, name):
+@bp.route('/<user>/<path:pq>', methods=['PUT'])
+def put(user, pq):
+    name = pq.strip('/')
+
+    # TODO: auth check
+    #payload = request.get_json()
+    #to = payload['to']
+
     items.put(user, name, 'A')
     return ('', HTTPStatus.CREATED)
