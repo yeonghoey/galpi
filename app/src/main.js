@@ -9,8 +9,8 @@ import 'bootstrap-social/bootstrap-social.css';
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 
-import App from './App';
-import router from './router';
+import router from '@/router';
+import App from '@/App';
 
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;

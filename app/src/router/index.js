@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from '@/components/Home';
-import Item from '@/components/Item';
+import HomeView from '@/views/HomeView';
+import ItemView from '@/views/ItemView';
 
 Vue.use(Router);
 
@@ -12,12 +12,12 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      component: HomeView,
     },
     {
       path: '/:user/:name*',
-      name: 'Item',
-      component: Item,
+      name: 'ItemView',
+      component: ItemView,
       props: true,
     },
   ],

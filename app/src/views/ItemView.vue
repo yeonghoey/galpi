@@ -1,28 +1,34 @@
 <template>
   <div>
-    <h1>{{ user }} / {{ name }}</h1>
-    <p>{{ self.to }}</p>
-    <ul>
-      <li v-for="child in children" :key="child">
-        {{ child.name }} {{ child.to }}
-      </li>
-    </ul>
+    <ItemSelf
+      :user="user"
+      :name="name"
+    />
+    <ItemChildren
+      :children="children"
+    />
   </div>
 </template>
 
 <script>
 import api from '@/core/api';
+import ItemSelf from '@/components/ItemSelf';
+import ItemChildren from '@/components/ItemChildren';
 
 export default {
-  name: 'Item',
+  name: 'ItemView',
 
   props: ['user', 'name'],
+
+  components: {
+    ItemSelf,
+    ItemChildren,
+  },
 
   data() {
     return {
       self: {},
       children: [],
-      errors: [],
     };
   },
 
@@ -50,7 +56,7 @@ export default {
         this.children = response.data.children;
       })
       .catch((error) => {
-        this.errors.push(error);
+        this.error = error;
       });
   },
 };

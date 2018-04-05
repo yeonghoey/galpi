@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-    <a href="#" class="btn btn-block btn-social btn-github">
-      <span class="fa fa-github"></span> Sign in with GitHub
-    </a>
-    <router-view/>
+    <router-view
+      class="w-75 m-auto"
+      :key="$route.path"
+    />
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar';
-
 export default {
   name: 'App',
 };
@@ -19,8 +17,13 @@ export default {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.view {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 </style>
