@@ -19,6 +19,7 @@
     "bootstrap-social": "^5.1.1",
     "bootstrap-vue": "^2.0.0-rc.6",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
