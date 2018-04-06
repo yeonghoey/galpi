@@ -53,7 +53,7 @@ export default {
       const [t, p] = pair;
       // Make sure that navigating always gives list,
       // not direct redirection
-      return { text: t, to: `/${this.user}/${p}/`};
+      return { text: t, to: `/${this.user}/${p}/` };
     });
 
     _.last(subs).active = true;
