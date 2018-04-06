@@ -1,12 +1,16 @@
 <template>
   <div>
+
     <ItemSelf
       :user="user"
       :name="name"
     />
+
     <ItemChildren
+      :user="user"
       :children="children"
     />
+
   </div>
 </template>
 
