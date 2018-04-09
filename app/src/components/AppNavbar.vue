@@ -7,6 +7,7 @@
     >
 
     <b-navbar-brand to="/">
+      <span class="fa fa-bookmark-o p-1"></span>
       Galpi
     </b-navbar-brand>
 

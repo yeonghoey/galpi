@@ -1,21 +1,24 @@
 <template>
   <div>
     <b-breadcrumb>
-
-
       <b-breadcrumb-item
         :text="user"
         :to="`/${user}`"
         class="font-weight-bold"
       />
-
       <b-breadcrumb-item
         v-for="(sub, index) in subs"
         :key="index"
         v-bind="sub"
       />
-
-
+      <div class="ml-auto">
+        <b-link
+          :href="to"
+          class="text-secondary"
+        >
+          {{ to }}
+        </b-link>
+      </div>
     </b-breadcrumb>
   </div>
 </template>
@@ -32,6 +35,12 @@ export default {
     },
 
     name: {
+      type: String,
+      required: false,
+      default: '',
+    },
+
+    to: {
       type: String,
       required: false,
       default: '',

@@ -3,6 +3,7 @@
     <ItemSelf
       :user="user"
       :name="name"
+      :to="self.to"
     />
 
     <ItemChildren
