@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import api from '@/core/api';
+import api from '@/api';
 import ItemSelf from '@/components/ItemSelf';
 import ItemChildren from '@/components/ItemChildren';
 
