@@ -1,6 +1,7 @@
 [
   {"owner": "yeonghoey", "name": "g", "to": "https://google.com"},
   {"owner": "yeonghoey", "name": "y", "to": "https://youtube.com"},
+  {"owner": "yeonghoey", "name": "gh", "to": "https://github.com/yeonghoey"},
   {"owner": "yeonghoey", "name": "gh/g", "to": "https://github.com/yeonghoey/galpi"},
   {"owner": "yeonghoey", "name": "gh/y", "to": "https://github.com/yeonghoey/yeonghoey"}
 ]
