@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <ItemSelf
       :user="user"
       :name="name"
@@ -10,7 +9,6 @@
       :user="user"
       :children="children"
     />
-
   </div>
 </template>
 

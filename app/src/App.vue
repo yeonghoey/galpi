@@ -1,25 +1,21 @@
 <template>
   <div id="app">
-    <h1 class="w-75 px-2 py-3 mx-auto">
-      Galpi
-    </h1>
+    <AppNavbar/>
+
     <router-view
-      class="w-75 m-auto"
+      class="m-2"
       :key="$route.path"
     />
   </div>
 </template>
 
 <script>
+import AppNavbar from '@/components/AppNavbar';
+
 export default {
   name: 'App',
+  components: {
+    AppNavbar,
+  },
 };
 </script>
-
-<style>
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-</style>
