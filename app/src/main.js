@@ -1,6 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/scss/bootstrap.scss';
 import 'bootstrap-vue/dist/bootstrap-vue.min.css';
 
 import 'font-awesome/css/font-awesome.min.css';
