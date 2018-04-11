@@ -17,9 +17,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-auth .btn-social>:first-child {
-  /* bootstrap light  */
-  border-right: 1px solid #f8f9fa;
+  border-right: 1px solid $light;
 }
 </style>
