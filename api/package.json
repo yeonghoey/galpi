@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pipenv run sls wsgi serve"
+    "dev": "sls wsgi serve"
   },
   "repository": {
     "type": "git",

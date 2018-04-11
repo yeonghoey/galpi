@@ -2,7 +2,7 @@ service: galpi
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python
   stage: ${opt:stage, 'dev'}
   region: ap-northeast-1
   iamRoleStatements:
