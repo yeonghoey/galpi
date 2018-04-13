@@ -36,15 +36,22 @@ def acquire_token(code):
 
 
 def acquire_userinfo(access_token):
-    client_id = current_app.config['CLIENT_ID']
-    url = ('https://api.github.com/applications'
-           f'/{client_id}/tokens/{access_token}')
-
-    res = requests.get(url, auth=client_auth())
+    res = requests.get(auth_url(access_token), auth=client_auth())
     user = res.json().get('user', {})
     return {
         'username': user.get('login'),
     }
+
+
+def revoke_token(access_token):
+    res = requests.delete(auth_url(access_token), auth=client_auth())
+    return res.ok
+
+
+def auth_url(access_token):
+    client_id = current_app.config['CLIENT_ID']
+    return ('https://api.github.com/applications'
+            f'/{client_id}/tokens/{access_token}')
 
 
 def client_auth():
