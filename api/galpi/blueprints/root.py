@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request
 
 from galpi.db import items
 
@@ -8,8 +8,8 @@ bp = Blueprint('root', __name__)
 
 
 @bp.route('/')
-def home():
-    return jsonify({})
+def index():
+    return ('', HTTPStatus.NO_CONTENT)
 
 
 @bp.route('/<user>/', defaults={'pq': None})

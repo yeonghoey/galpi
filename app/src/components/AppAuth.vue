@@ -8,6 +8,7 @@
         class="btn-social"
         variant="outline-light"
         size="sm"
+        @click="signIn"
         >
         <span class="fa fa-github"></span>
         Sign in with GitHub
@@ -39,7 +40,7 @@ export default {
 
   computed: {
     signInRequired() {
-      return this.username === undefined;
+      return this.username == null;
     },
 
     ...mapState('auth', [
@@ -48,6 +49,10 @@ export default {
   },
 
   methods: {
+    signIn() {
+      window.location.href = `${process.env.API_BASE_URL}/auth/signin`;
+    },
+
     ...mapActions('auth', [
       'checkAuth',
       'signOut',
