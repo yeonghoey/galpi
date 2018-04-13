@@ -6,6 +6,7 @@ import uuid
 import pytest
 
 from galpi import create_app
+from galpi.helper import ensure_pathkey
 
 
 @pytest.fixture
@@ -72,14 +73,21 @@ class TestClient():
 
         return response
 
-    def batch_put(self, user, data_string):
+    def batch_put(self, username, data_string):
         lines = data_string.strip().splitlines()
         items = {}
         for l in lines:
             a, b = l.split('|')
-            name, to = a.strip(), b.strip()
-            self.put(f'/{user}/{name}', json={'to': to}, ok=True)
-            items[name] = {'owner': user, 'name': name, 'to': to}
+            pathquery, linkto = a.strip(), b.strip()
+            self.put(f'/{username}/{pathquery}',
+                     json={'linkto': linkto},
+                     ok=True)
+            items[pathquery] = {
+                'username': username,
+                'pathkey': ensure_pathkey(pathquery),
+                'linkto': linkto,
+                'description': None,
+            }
         return items
 
     @property
@@ -113,7 +121,7 @@ def client(app):
 
 
 @pytest.fixture
-def user():
+def username():
     """Generates a unique user name.
 
     Since running a single database instance, it is necessary to use unique

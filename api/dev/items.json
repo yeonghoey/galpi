@@ -1,7 +1,7 @@
 [
-  {"owner": "yeonghoey", "name": "g", "to": "https://google.com"},
-  {"owner": "yeonghoey", "name": "y", "to": "https://youtube.com"},
-  {"owner": "yeonghoey", "name": "gh", "to": "https://github.com/yeonghoey"},
-  {"owner": "yeonghoey", "name": "gh/g", "to": "https://github.com/yeonghoey/galpi"},
-  {"owner": "yeonghoey", "name": "gh/y", "to": "https://github.com/yeonghoey/yeonghoey"}
+  {"username": "yeonghoey", "pathkey": "g", "linkto": "https://google.com"},
+  {"username": "yeonghoey", "pathkey": "y", "linkto": "https://youtube.com"},
+  {"username": "yeonghoey", "pathkey": "gh", "linkto": "https://github.com/yeonghoey"},
+  {"username": "yeonghoey", "pathkey": "gh/g", "linkto": "https://github.com/yeonghoey/galpi"},
+  {"username": "yeonghoey", "pathkey": "gh/y", "linkto": "https://github.com/yeonghoey/yeonghoey"}
 ]

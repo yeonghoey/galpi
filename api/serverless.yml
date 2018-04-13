@@ -76,14 +76,14 @@ resources:
       Properties:
         TableName: ${self:custom.name}-items
         AttributeDefinitions:
-          - AttributeName: owner
+          - AttributeName: username
             AttributeType: S
-          - AttributeName: name
+          - AttributeName: pathkey
             AttributeType: S
         KeySchema:
-          - AttributeName: owner
+          - AttributeName: username
             KeyType: HASH
-          - AttributeName: name
+          - AttributeName: pathkey
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
