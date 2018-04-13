@@ -1,16 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import auth from '@/store/modules/auth';
+
 Vue.use(Vuex);
 
-const state = {
-  loginAs: undefined,
-};
-
-export const mutations = {
-};
-
 export default new Vuex.Store({
-  state,
-  mutations,
+  modules: {
+    auth,
+  },
 });
