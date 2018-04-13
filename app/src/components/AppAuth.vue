@@ -21,7 +21,9 @@
       right
       >
 
-      <b-dropdown-item>
+      <b-dropdown-item
+        @click="signOut"
+        >
         Sign out
       </b-dropdown-item>
 
@@ -48,6 +50,7 @@ export default {
   methods: {
     ...mapActions('auth', [
       'checkAuth',
+      'signOut',
     ]),
   },
 

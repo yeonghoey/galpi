@@ -7,6 +7,13 @@ export const actions = {
         commit('update', response.data.username);
       });
   },
+
+  signOut({ commit }) {
+    return api.post('/auth/signout')
+      .then(() => {
+        commit('update', undefined);
+      });
+  },
 };
 
 export const mutations = {
