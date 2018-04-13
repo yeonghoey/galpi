@@ -1,6 +1,6 @@
-from flask import Blueprint, redirect, request, session, url_for
+from flask import Blueprint, jsonify, redirect, request, session, url_for
 
-from galpi.github import prepare_auth_request, acquire_token, acquire_login
+from galpi.github import prepare_auth_request, acquire_token, acquire_userinfo
 
 
 bp = Blueprint('auth', __name__)
@@ -24,8 +24,18 @@ def exchange():
 
     code = request.args.get('code')
     access_token = acquire_token(code)
-    login = acquire_login(access_token)
-
-    session['login'] = login
     session['access_token'] = access_token
-    return redirect(url_for('root.index'))
+
+    # TODO: redirect to frontend
+    return redirect(url_for('root.home'))
+
+
+@bp.route('/me')
+def me():
+    access_token = session.get('access_token')
+    if access_token is None:
+        return jsonify({})
+    else:
+        userinfo = acquire_userinfo(access_token)
+        session['userinfo'] = userinfo
+    return jsonify(userinfo)

@@ -32,18 +32,20 @@ def acquire_token(code):
     }
 
     res = requests.post(url, headers=headers, data=payload)
-
     return res.json()['access_token']
 
 
-def acquire_login(access_token):
-    url_fmt = 'https://api.github.com/applications/%s/tokens/%s'
-    url = url_fmt % (current_app.config['CLIENT_ID'], access_token)
+def acquire_userinfo(access_token):
+    client_id = current_app.config['CLIENT_ID']
+    url = ('https://api.github.com/applications'
+           f'/{client_id}/tokens/{access_token}')
 
     res = requests.get(url, auth=client_auth())
-
     user = res.json().get('user', {})
-    return user.get('login')
+    return {
+        'username': user.get('login'),
+        'avatar_url': user.get('avatar_url'),
+    }
 
 
 def client_auth():
