@@ -12,13 +12,11 @@ export const actions = {
 export const mutations = {
   update(state, username) {
     state.username = username;
-    state.refreshRequired = false;
   },
 };
 
 const state = {
   username: undefined,
-  refreshRequired: true,
 };
 
 export default {

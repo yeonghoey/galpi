@@ -1,20 +1,31 @@
 <template>
   <div class="app-auth">
-    <b-button
+    <b-nav-item
       v-if="signInRequired"
-      class="btn-social"
-      variant="outline-light"
-      size="sm"
-    >
-      <span class="fa fa-github"></span>
-      Sign in with GitHub
-    </b-button>
+      >
 
-    <h2 v-else>
-      Welcome, {{ username }}
-    </h2>
+      <b-button
+        class="btn-social"
+        variant="outline-light"
+        size="sm"
+        >
+        <span class="fa fa-github"></span>
+        Sign in with GitHub
+      </b-button>
 
+    </b-nav-item>
 
+    <b-nav-item-dropdown
+      v-else
+      :text="username"
+      right
+      >
+
+      <b-dropdown-item>
+        Sign out
+      </b-dropdown-item>
+
+    </b-nav-item-dropdown>
   </div>
 </template>
 
