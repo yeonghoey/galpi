@@ -15,7 +15,7 @@ export default new Router({
       component: HomeView,
     },
     {
-      path: '/:user/:name*',
+      path: '/:username/:pathquery*',
       name: 'ItemView',
       component: ItemView,
       props: true,

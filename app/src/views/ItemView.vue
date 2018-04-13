@@ -1,13 +1,12 @@
 <template>
   <div>
     <ItemSelf
-      :user="user"
-      :name="name"
-      :to="self.to"
+      :username="username"
+      :pathquery="pathquery"
     />
 
     <ItemChildren
-      :user="user"
+      :username="username"
       :children="children"
     />
   </div>
@@ -21,7 +20,8 @@ import ItemChildren from '@/components/ItemChildren';
 export default {
   name: 'ItemView',
 
-  props: ['user', 'name'],
+  // TODO: Make declarations specific
+  props: ['username', 'pathquery'],
 
   components: {
     ItemSelf,
@@ -35,25 +35,21 @@ export default {
     };
   },
 
-  computed: {
-    pq() {
-      return this.$route.path;
-    },
-  },
-
   watch: {
-    self(val) {
-      if (this.pq.endsWith('/')) {
+    self(item) {
+      // TODO: This logic should only be in API
+      if (this.$route.path.endsWith('/')) {
         return;
       }
-      if (val.to !== undefined) {
-        window.location.href = val.to;
+
+      if (item.linkto != null) {
+        window.location.href = item.linkto;
       }
     },
   },
 
   created() {
-    api.get(this.pq)
+    api.get(this.$route.path)
       .then((response) => {
         this.self = response.data.self;
         this.children = response.data.children;

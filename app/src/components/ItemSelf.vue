@@ -2,8 +2,8 @@
   <div>
     <b-breadcrumb>
       <b-breadcrumb-item
-        :text="user"
-        :to="`/${user}`"
+        :text="username"
+        :to="`/${username}`"
         class="font-weight-bold"
       />
       <b-breadcrumb-item
@@ -11,14 +11,6 @@
         :key="index"
         v-bind="sub"
       />
-      <div class="ml-auto">
-        <b-link
-          :href="to"
-          class="text-secondary"
-        >
-          {{ to }}
-        </b-link>
-      </div>
     </b-breadcrumb>
   </div>
 </template>
@@ -29,18 +21,18 @@ import _ from 'lodash';
 export default {
   name: 'ItemSelf',
   props: {
-    user: {
+    username: {
       type: String,
       required: true,
     },
 
-    name: {
+    pathquery: {
       type: String,
       required: false,
       default: '',
     },
 
-    to: {
+    linkto: {
       type: String,
       required: false,
       default: '',
@@ -48,7 +40,7 @@ export default {
   },
   data() {
     // 'a/b/c' => ['a', 'b', 'c']
-    const terms = _.split(this.name, '/');
+    const terms = _.split(this.pathquery, '/');
 
     // ['a', 'b', 'c'] => ['a', 'a/b', 'a/b/c']
     const paths = _.reduce(terms, (ps, t) => {
@@ -62,7 +54,7 @@ export default {
       const [t, p] = pair;
       // Make sure that navigating always gives list,
       // not direct redirection
-      return { text: t, to: `/${this.user}/${p}/` };
+      return { text: t, to: `/${this.username}/${p}/` };
     });
 
     _.last(subs).active = true;
