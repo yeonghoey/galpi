@@ -17,8 +17,9 @@ def index():
 
 @bp.route('/exchange')
 def exchange():
-    state = request.args.get('state')
-    if state != session['state']:
+    state_passed = request.args['state']
+    state = session.pop('state', None)
+    if state_passed != state:
         # TODO: handle this properly
         return None
 
