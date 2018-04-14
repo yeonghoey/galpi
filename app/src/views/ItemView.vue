@@ -54,8 +54,8 @@ export default {
 
   watch: {
     queried(q) {
-      if (q.redirect && q.item.linkto) {
-        window.location.href = q.item.linkto;
+      if (q.redirect && q.self.linkto) {
+        window.location.href = q.self.linkto;
       }
     },
   },
