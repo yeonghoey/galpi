@@ -19,7 +19,8 @@
 import _ from 'lodash';
 
 export default {
-  name: 'ItemSelf',
+  name: 'ItemPath',
+
   props: {
     username: {
       type: String,
@@ -31,16 +32,11 @@ export default {
       required: false,
       default: '',
     },
-
-    linkto: {
-      type: String,
-      required: false,
-      default: '',
-    },
   },
   data() {
     // 'a/b/c' => ['a', 'b', 'c']
-    const terms = _.split(this.pathquery, '/');
+    const pathkey = _.trim(this.pathquery, '/');
+    const terms = _.split(pathkey, '/');
 
     // ['a', 'b', 'c'] => ['a', 'a/b', 'a/b/c']
     const paths = _.reduce(terms, (ps, t) => {
