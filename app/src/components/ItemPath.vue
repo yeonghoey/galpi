@@ -4,7 +4,7 @@
       <b-breadcrumb-item
         :text="username"
         :to="`/${username}`"
-        :active="isUserView"
+        :active="noSubs"
         class="font-weight-bold"
       />
       <b-breadcrumb-item
@@ -64,7 +64,7 @@ export default {
   },
 
   computed: {
-    isUserView() {
+    noSubs() {
       return _.isEmpty(this.subs);
     },
   },
