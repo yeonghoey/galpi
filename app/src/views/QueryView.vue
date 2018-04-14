@@ -5,16 +5,26 @@
       :pathquery="pathquery"
     />
 
-    <ItemChildren
-      :username="username"
-      :children="children"
-    />
+    <div v-if="redirect">
+    </div>
+    <div v-else>
+      <ItemSelf
+        :username="username"
+        :self="self"
+      />
+      <ItemChildren
+        :username="username"
+        :children="children"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api';
+
 import ItemPath from '@/components/ItemPath';
+import ItemSelf from '@/components/ItemSelf';
 import ItemChildren from '@/components/ItemChildren';
 
 export default {
@@ -25,6 +35,7 @@ export default {
 
   components: {
     ItemPath,
+    ItemSelf,
     ItemChildren,
   },
 
@@ -50,8 +61,8 @@ export default {
   },
 
   computed: {
-    item() {
-      return this.queried.item;
+    self() {
+      return this.queried.self;
     },
     redirect() {
       return this.queried.redirect;
