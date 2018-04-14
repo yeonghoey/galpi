@@ -1,29 +1,24 @@
 <template>
   <div>
-    <ItemPath
+    <ItemSelf
       :username="username"
-      :pathquery="pathquery"
-    />
+      :self="self"
+      />
 
     <div v-if="redirect">
     </div>
     <div v-else>
-      <ItemSelf
-        :username="username"
-        :self="self"
-      />
       <ItemChildren
         :username="username"
         :children="children"
-      />
+        />
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash';
 import api from '@/api';
-
-import ItemPath from '@/components/ItemPath';
 import ItemSelf from '@/components/ItemSelf';
 import ItemChildren from '@/components/ItemChildren';
 
@@ -34,7 +29,6 @@ export default {
   props: ['username', 'pathquery'],
 
   components: {
-    ItemPath,
     ItemSelf,
     ItemChildren,
   },
@@ -62,13 +56,13 @@ export default {
 
   computed: {
     self() {
-      return this.queried.self;
+      return _.get(this.queried, 'self', {});
     },
     redirect() {
-      return this.queried.redirect;
+      return _.get(this.queried, 'redirect', false);
     },
     children() {
-      return this.queried.children;
+      return _.get(this.queried, 'children', []);
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div id="item-children">
+  <div class="item-children m-2">
     <b-table hover
              :fields="fields"
              :items="children">
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-#item-children >>> .b-table th {
+.item-children >>> .b-table th {
   display: none !important;
 }
 </style>
