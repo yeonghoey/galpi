@@ -28,7 +28,7 @@ import ItemSelf from '@/components/ItemSelf';
 import ItemChildren from '@/components/ItemChildren';
 
 export default {
-  name: 'QueryView',
+  name: 'ItemView',
 
   // TODO: Make declarations specific
   props: ['username', 'pathquery'],

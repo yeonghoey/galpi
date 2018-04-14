@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import HomeView from '@/views/HomeView';
-import QueryView from '@/views/QueryView';
+import ItemView from '@/views/ItemView';
 
 Vue.use(Router);
 
@@ -16,8 +16,8 @@ export default new Router({
     },
     {
       path: '/:username',
-      name: 'UserView',
-      component: QueryView,
+      name: 'ItemViewUser',
+      component: ItemView,
       props: route => ({
         username: route.params.username,
         pathquery: '',
@@ -26,7 +26,7 @@ export default new Router({
     {
       path: '/:username/:pathquery+/',
       name: 'ItemView',
-      component: QueryView,
+      component: ItemView,
 
       // Inject the trailing slash into 'pathquery'
       pathToRegexpOptions: { strict: true },
@@ -37,8 +37,8 @@ export default new Router({
     },
     {
       path: '/:username/:pathquery+',
-      name: 'RedirectOrItemView',
-      component: QueryView,
+      name: 'ItemViewRedirect',
+      component: ItemView,
 
       pathToRegexpOptions: { strict: true },
       props: true,
