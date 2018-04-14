@@ -1,60 +1,35 @@
 <template>
   <div class="m-1 d-flex">
-    <!-- Remove the b-breadcrumb's default margin bottom -->
-    <b-breadcrumb class="mb-0 p-2 flex-fill">
-      <b-breadcrumb-item
-        :text="username"
-        :to="`/${username}`"
-        :active="noSubs"
-        class="font-weight-bold"
-        />
-      <b-breadcrumb-item
-        v-for="(sub, index) in subs"
-        :key="index"
-        v-bind="sub"
-        />
-
-      <b-form-input
-        v-if="editing"
-        class="w-50 ml-auto"
-        placeholder="Test"
-        >
-      </b-form-input>
-      <b-link
-        v-else
-        class="ml-auto text-secondary"
-        :href="linkto"
-        >
-        {{ linkto }}
-      </b-link>
-    </b-breadcrumb>
-
-    <div>
-      <b-button
-        variant="secondary"
-        @click="toggleEditing">
-        Edit
-      </b-button>
-    </div>
+    <ItemSelfBreadcrumb
+      class="flex-fill"
+      :username="username"
+      :subs="subs"
+      :editing="editing"
+      />
+    <ItemSelfToolButtons
+      class="mx-2"
+      :username="username"
+      @startediting="startEditing"
+      />
   </div>
 </template>
 
 <script>
 import _ from 'lodash';
+import ItemSelfBreadcrumb from '@/components/ItemSelfBreadcrumb';
+import ItemSelfToolButtons from '@/components/ItemSelfToolButtons';
 
 export default {
   name: 'ItemSelf',
 
-  props: {
-    username: {
-      type: String,
-      required: true,
-    },
+  components: {
+    ItemSelfBreadcrumb,
+    ItemSelfToolButtons,
+  },
 
-    self: {
-      type: Object,
-      required: true,
-    },
+  props: {
+    username: String,
+    self: Object,
   },
 
   data() {
@@ -96,15 +71,11 @@ export default {
       }
       return subs;
     },
-
-    noSubs() {
-      return _.isEmpty(this.subs);
-    },
   },
 
   methods: {
-    toggleEditing() {
-      this.editing = !this.editing;
+    startEditing() {
+      this.editing = true;
     },
   },
 };
