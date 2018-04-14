@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'AppAuth',
@@ -45,22 +45,30 @@ export default {
 
     ...mapState('auth', [
       'username',
-    ]),
-  },
-
-  methods: {
-    signIn() {
-      window.location.href = `${process.env.API_BASE_URL}/auth/signin`;
-    },
-
-    ...mapActions('auth', [
-      'checkAuth',
-      'signOut',
+      'refresh',
     ]),
   },
 
   created() {
-    this.checkAuth();
+    if (this.refresh) {
+      this.checkAuth();
+    }
+  },
+
+  methods: {
+    signIn() {
+      this.refreshRequired();
+      window.location.href = `${process.env.API_BASE_URL}/auth/signin`;
+    },
+
+    ...mapMutations('auth', [
+      'refreshRequired',
+    ]),
+    ...mapActions('auth', [
+      'checkAuth',
+      'signOut',
+    ]),
+
   },
 };
 </script>

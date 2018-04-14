@@ -17,13 +17,19 @@ export const actions = {
 };
 
 export const mutations = {
+  refreshRequired(state) {
+    state.refresh = true;
+  },
+
   update(state, username) {
     state.username = username;
+    state.refresh = false;
   },
 };
 
 const state = {
   username: undefined,
+  refresh: true,
 };
 
 export default {
