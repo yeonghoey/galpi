@@ -1,6 +1,6 @@
 <template>
   <!-- Remove the b-breadcrumb's default margin bottom -->
-  <b-breadcrumb class="mb-0 p-2">
+  <b-breadcrumb class="mb-0 flex-fill">
     <b-breadcrumb-item
       :text="username"
       :to="`/${username}`"
@@ -13,19 +13,6 @@
       v-bind="sub"
       />
 
-    <!-- <b-form-input -->
-    <!--   v-if="editing" -->
-    <!--   class="w-50 ml-auto" -->
-    <!--   placeholder="Test" -->
-    <!--   > -->
-    <!-- </b-form-input> -->
-    <!-- <b-link -->
-    <!--   v-else -->
-    <!--   class="ml-auto text-secondary" -->
-    <!--   :href="linkto" -->
-    <!--   > -->
-    <!--   {{ linkto }} -->
-    <!-- </b-link> -->
   </b-breadcrumb>
 </template>
 
@@ -38,12 +25,8 @@ export default {
   props: {
     username: String,
     subs: Array,
-  },
-
-  data() {
-    return {
-      editing: false,
-    };
+    linkto: String,
+    editing: Boolean,
   },
 
   computed: {

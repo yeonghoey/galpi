@@ -1,14 +1,15 @@
 <template>
   <div class="m-1 d-flex">
     <ItemSelfBreadcrumb
-      class="flex-fill"
+      class="w-50"
       :username="username"
       :subs="subs"
-      :editing="editing"
       />
     <ItemSelfToolButtons
-      class="mx-2"
+      class="w-50"
       :username="username"
+      :pathkey="pathkey"
+      :linkto="linkto"
       @startediting="startEditing"
       />
   </div>
