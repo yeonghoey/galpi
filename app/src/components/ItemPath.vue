@@ -4,6 +4,7 @@
       <b-breadcrumb-item
         :text="username"
         :to="`/${username}`"
+        :active="isUserView"
         class="font-weight-bold"
       />
       <b-breadcrumb-item
@@ -33,10 +34,10 @@ export default {
       default: '',
     },
   },
+
   data() {
     // 'a/b/c' => ['a', 'b', 'c']
-    const pathkey = _.trim(this.pathquery, '/');
-    const terms = _.split(pathkey, '/');
+    const terms = _.split(this.pathquery, '/').filter(t => t !== '');
 
     // ['a', 'b', 'c'] => ['a', 'a/b', 'a/b/c']
     const paths = _.reduce(terms, (ps, t) => {
@@ -53,11 +54,19 @@ export default {
       return { text: t, to: `/${this.username}/${p}/` };
     });
 
-    _.last(subs).active = true;
+    if (!_.isEmpty(subs)) {
+      _.last(subs).active = true;
+    }
 
     return {
       subs,
     };
+  },
+
+  computed: {
+    isUserView() {
+      return _.isEmpty(this.subs);
+    },
   },
 };
 </script>
