@@ -4,6 +4,25 @@ from galpi.db.tables import items as table
 from galpi.helper import ensure_pathkey
 
 
+def query(username, pathquery):
+    self_ = ({} if pathquery is None else
+             _get_item(username, pathquery))
+
+    redirect = (pathquery is not None and
+                not pathquery.endswith('/')
+                and 'linkto' in self_)
+
+    children = (_get_all(username) if pathquery is None else
+                _get_children(username, pathquery) if not redirect else
+                [])
+
+    return {
+        'self': self_,
+        'redirect': redirect,
+        'children': children,
+    }
+
+
 def put(username,
         pathkey,
         linkto,
@@ -14,43 +33,30 @@ def put(username,
         'linkto': linkto,
         'description': description,
     }
-    response = table.put_item(Item=item)
-    return response
+    return _put_item(item)
 
 
-def query(username, pathquery):
-    if pathquery is None:
-        return {
-            'self': {},
-            'children': query_all(username),
-        }
-
-    item = query_item(username, pathquery)
-    children_needed = (pathquery.endswith('/') or (not item))
-    children = (query_children(username, pathquery) if children_needed else [])
-
-    return {
-        'self': item,
-        'children': children,
-    }
-
-
-def query_all(username):
+def _get_all(username):
     key = Key('username').eq(username)
     res = table.query(KeyConditionExpression=key)
     return res.get('Items', [])
 
 
-def query_item(username, pathquery):
+def _get_item(username, pathquery):
     pathkey = ensure_pathkey(pathquery)
     key = {'username': username, 'pathkey': pathkey}
     res = table.get_item(Key=key)
     return res.get('Item', {})
 
 
-def query_children(username, pathquery):
+def _get_children(username, pathquery):
     pathkey = ensure_pathkey(pathquery)
     cond = (Key('username').eq(username) &
             Key('pathkey').begins_with(f'{pathkey}/'))
     res = table.query(KeyConditionExpression=cond)
     return res.get('Items', [])
+
+
+def _put_item(item):
+    response = table.put_item(Item=item)
+    return response

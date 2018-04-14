@@ -17,7 +17,6 @@ def index():
 @bp.route('/<username>/<path:pathquery>')
 def query(username, pathquery):
     payload = items.query(username, pathquery)
-    print(payload)
     return jsonify(payload)
 
 

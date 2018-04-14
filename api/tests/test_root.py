@@ -15,17 +15,23 @@ def test_pq(client, username):
     assert client[-1].json == client.json
     assert client.json == {
         'self': {},
+        'redirect': False,
         'children': list(items.values())
     }
 
     # Requests a redirect query, (so returns no children)
     client.get(f'/{username}/a', ok=True)
-    assert client.json == {'self': items['a'], 'children': []}
+    assert client.json == {
+        'self': items['a'],
+        'redirect': True,
+        'children': []
+    }
 
     # Requests a list query, includes the item itself
     client.get(f'/{username}/a/', ok=True)
     assert client.json == {
         'self': items['a'],
+        'redirect': False,
         'children': [items[n] for n in 'a/1;a/2;a/b/1;a/b/2'.split(';')]
     }
 
@@ -35,6 +41,7 @@ def test_pq(client, username):
     assert (client[-1].json ==
             client.json == {
                 'self': {},
+                'redirect': False,
                 'children': [items[n] for n in 'a/b/1;a/b/2'.split(';')]
             })
 
@@ -48,6 +55,7 @@ def test_pq(client, username):
             client[-1].json ==
             client.json == {
                 'self': {},
+                'redirect': False,
                 'children': [items['x/y/z']]
             })
 
