@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <AppNavbar/>
-
+  <div class="d-flex flex-column h-100v">
+    <AppNavbar class="flex-shrink-0"/>
     <router-view
-      class="m-2"
       :key="$route.path"
     />
   </div>
