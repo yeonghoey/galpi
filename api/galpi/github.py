@@ -35,8 +35,8 @@ def acquire_token(code):
     return res.json()['access_token']
 
 
-def acquire_userinfo(access_token):
-    res = requests.get(auth_url(access_token), auth=client_auth())
+def acquire_userinfo(token):
+    res = requests.get(auth_url(token), auth=client_auth())
     user = res.json().get('user', {})
     return {
         'username': user.get('login'),
@@ -44,15 +44,15 @@ def acquire_userinfo(access_token):
     }
 
 
-def revoke_token(access_token):
-    res = requests.delete(auth_url(access_token), auth=client_auth())
+def revoke_token(token):
+    res = requests.delete(auth_url(token), auth=client_auth())
     return res.ok
 
 
-def auth_url(access_token):
+def auth_url(token):
     client_id = current_app.config['CLIENT_ID']
     return ('https://api.github.com/applications'
-            f'/{client_id}/tokens/{access_token}')
+            f'/{client_id}/tokens/{token}')
 
 
 def client_auth():

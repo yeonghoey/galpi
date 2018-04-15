@@ -5,6 +5,7 @@ from flask import (
 
 from galpi.github import (
     prepare_auth_request, acquire_token, acquire_userinfo, revoke_token)
+from galpi.db import users
 
 
 bp = Blueprint('auth', __name__)
@@ -31,8 +32,9 @@ def exchange():
         return None
 
     # TODO: handle error
-    access_token = acquire_token(code)
-    session['access_token'] = access_token
+    token = acquire_token(code)
+    session['token'] = token
+    update_userinfo()
 
     if referrer is not None:
         return redirect(referrer)
@@ -42,21 +44,30 @@ def exchange():
 
 @bp.route('/me')
 def me():
-    access_token = session.get('access_token')
-    if access_token is None:
+    userinfo = update_userinfo()
+    if userinfo is None:
         return ('', HTTPStatus.NO_CONTENT)
     else:
-        userinfo = acquire_userinfo(access_token)
-        session['userinfo'] = userinfo
-    return jsonify(userinfo)
+        return jsonify(userinfo)
 
 
 @bp.route('/signout', methods=['POST'])
 def signout():
     session.pop('userinfo', None)
-    access_token = session.pop('access_token', None)
+    token = session.pop('token', None)
 
-    if access_token is not None:
-        revoke_token(access_token)
+    if token is not None:
+        revoke_token(token)
 
     return ('', HTTPStatus.NO_CONTENT)
+
+
+def update_userinfo():
+    token = session.get('token')
+    if token is None:
+        return None
+    else:
+        userinfo = acquire_userinfo(token)
+        session['userinfo'] = userinfo
+        users.upsert(**userinfo)
+        return userinfo
