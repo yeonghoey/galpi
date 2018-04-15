@@ -1,18 +1,15 @@
 from galpi.db.tables import users as table
+from galpi.db.helper import set_itemattrs
 
 
-def create_if_not_exists(username):
-    return _update_user(username)
+def upsert(username, avatar_url):
+    return set_itemattrs(table, key(username), [('avatar_url', avatar_url)])
 
 
 def get(username):
-    return _get_user(username)
-
-
-def _get_user(username):
-    res = table.get_item(Key={'username': username})
+    res = table.get_item(Key=key(username))
     return res.get('Item', {})
 
 
-def _update_user(username):
-    table.update_item(Key={'username': username})
+def key(username):
+    return {'username': username}
