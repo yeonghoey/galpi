@@ -16,3 +16,4 @@ def table(name):
 
 
 items = LocalProxy(table('items'))
+users = LocalProxy(table('users'))

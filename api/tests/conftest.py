@@ -28,6 +28,17 @@ def app(monkeypatch):
     yield app
 
 
+@pytest.fixture
+def app_context(app):
+    return app.app_context
+
+
+@pytest.fixture
+def client(app):
+    with app.test_client() as c:
+        yield TestClient(c)
+
+
 class TestClient():
     def __init__(self, client):
         self.client = client
@@ -69,7 +80,10 @@ class TestClient():
         self.history.append(response)
 
         if ok is not None:
-            assert self.ok is ok
+            if ok:
+                assert self.last.status_code < 400
+            else:
+                assert self.last.status_code >= 400
 
         return response
 
@@ -112,12 +126,6 @@ class TestClient():
     def status(self):
         # .status is not compatible with http.HTTPStatus
         return self.last.status_code
-
-
-@pytest.fixture
-def client(app):
-    with app.test_client() as c:
-        yield TestClient(c)
 
 
 @pytest.fixture
