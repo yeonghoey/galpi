@@ -15,12 +15,14 @@
     </b-nav-item>
 
     <b-nav-item-dropdown
+      v-else
       right
       >
       <template slot="button-content">
         <b-img
-          class="border border-light"
           rounded="circle"
+          width="32"
+          height="32"
           :alt="myUsername"
           :src="myAvatarURL"
           />
