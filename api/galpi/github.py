@@ -40,6 +40,7 @@ def acquire_userinfo(access_token):
     user = res.json().get('user', {})
     return {
         'username': user.get('login'),
+        'avatar_url': user.get('avatar_url'),
     }
 
 

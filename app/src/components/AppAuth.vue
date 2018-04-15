@@ -1,9 +1,8 @@
 <template>
-  <div class="app-auth">
+  <b-navbar-nav class="app-auth">
     <b-nav-item
       v-if="signInRequired"
       >
-
       <b-button
         class="btn-social"
         variant="outline-light"
@@ -13,23 +12,26 @@
         <span class="fa fa-github"></span>
         Sign in with GitHub
       </b-button>
-
     </b-nav-item>
 
     <b-nav-item-dropdown
-      v-else
-      :text="username"
       right
       >
-
+      <template slot="button-content">
+        <b-img
+          class="border border-light"
+          rounded="circle"
+          :alt="myUsername"
+          :src="myAvatarURL"
+          />
+      </template>
       <b-dropdown-item
         @click="signOut"
         >
         Sign out
       </b-dropdown-item>
-
     </b-nav-item-dropdown>
-  </div>
+  </b-navbar-nav>
 </template>
 
 <script>
@@ -40,11 +42,12 @@ export default {
 
   computed: {
     signInRequired() {
-      return this.username == null;
+      return this.myUsername == null;
     },
 
     ...mapState('auth', [
-      'username',
+      'myUsername',
+      'myAvatarURL',
       'refresh',
     ]),
   },

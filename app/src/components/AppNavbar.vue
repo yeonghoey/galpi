@@ -10,11 +10,7 @@
       <span class="fa fa-bookmark-o p-1"></span>
       Galpi
     </b-navbar-brand>
-
-    <b-navbar-nav class="ml-auto">
-      <AppAuth/>
-    </b-navbar-nav>
-
+    <AppAuth class="ml-auto"/>
   </b-navbar>
 </template>
 

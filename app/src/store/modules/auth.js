@@ -4,14 +4,14 @@ export const actions = {
   checkAuth({ commit }) {
     return api.get('/auth/me')
       .then((response) => {
-        commit('update', response.data.username);
+        commit('update', response.data);
       });
   },
 
   signOut({ commit }) {
     return api.post('/auth/signout')
       .then(() => {
-        commit('update', undefined);
+        commit('update', {});
       });
   },
 };
@@ -21,14 +21,16 @@ export const mutations = {
     state.refresh = true;
   },
 
-  update(state, username) {
-    state.username = username;
+  update(state, userinfo) {
+    state.myUsername = userinfo.username;
+    state.myAvatarURL = userinfo.avatar_url;
     state.refresh = false;
   },
 };
 
 const state = {
-  username: undefined,
+  myUsername: undefined,
+  myAvatarURL: undefined,
   refresh: true,
 };
 
