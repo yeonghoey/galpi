@@ -12,6 +12,8 @@ import router from '@/router';
 import store from '@/store';
 import App from '@/App';
 
+import './assets/css/common.css';
+
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
