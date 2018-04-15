@@ -1,7 +1,7 @@
 <template>
   <aside
     class="d-flex flex-column p-2 bg-light">
-    <div class="flex-shrink-0 mb-1 p-2">
+    <div class="flex-shrink-0 mb-2 p-2">
       <h2 class="text-center">
         <b-link
           class="text-secondary"
@@ -21,7 +21,7 @@
       </b-button>
     </div>
 
-    <div class="p-2 overflow-y-auto">
+    <div class="px-2 overflow-y-auto">
       <b-list-group>
         <b-list-group-item>Test</b-list-group-item>
         <b-list-group-item>Test</b-list-group-item>

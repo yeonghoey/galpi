@@ -3,7 +3,7 @@
     <MainSidebar
       class="main-sidebar"
       :username="username"
-    />
+      />
   </div>
 </template>
 
