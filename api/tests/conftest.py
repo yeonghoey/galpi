@@ -30,7 +30,8 @@ def app(monkeypatch):
 
 @pytest.fixture
 def app_context(app):
-    return app.app_context
+    with app.app_context():
+        yield
 
 
 @pytest.fixture

@@ -1,16 +1,4 @@
 # from http import HTTPStatus
-from galpi.db import users
-
-
-def test_user(app_context, client, username):
-    with app_context():
-        users.create_if_not_exists(username)
-        users.create_if_not_exists(username)
-
-    client.get(f'/{username}', ok=True)
-    assert client.json == {
-        'username': username,
-    }
 
 
 # def test_pq(client, username):
