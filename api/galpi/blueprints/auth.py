@@ -3,8 +3,7 @@ from http import HTTPStatus
 from flask import (
     Blueprint, current_app, jsonify, redirect, request, session, url_for)
 
-from galpi.github import (
-    prepare_auth_request, acquire_token, acquire_userinfo, revoke_token)
+from galpi import github
 from galpi.db import users
 
 
@@ -14,7 +13,7 @@ bp = Blueprint('auth', __name__)
 @bp.route('/signin')
 def signin():
     redirect_uri = url_for('.exchange', _external=True)
-    uri, state = prepare_auth_request(redirect_uri)
+    uri, state = github.auth_uri(redirect_uri)
     session['state'] = state
     session['referrer'] = request.headers.get('Referer')
     return redirect(uri)
@@ -32,7 +31,7 @@ def exchange():
         return None
 
     # TODO: handle error
-    token = acquire_token(code)
+    token = github.acquire_token(code)
     session['token'] = token
     update_userinfo()
 
@@ -57,7 +56,7 @@ def signout():
     token = session.pop('token', None)
 
     if token is not None:
-        revoke_token(token)
+        github.revoke_token(token)
 
     return ('', HTTPStatus.NO_CONTENT)
 
@@ -67,7 +66,15 @@ def update_userinfo():
     if token is None:
         return None
     else:
-        userinfo = acquire_userinfo(token)
+        user = github.acquire_user(token)
+        userinfo = to_userinfo(user)
         session['userinfo'] = userinfo
         users.upsert(**userinfo)
         return userinfo
+
+
+def to_userinfo(user):
+    return {
+        'username': user.get('login'),
+        'avatar_url': user.get('avatar_url'),
+    }

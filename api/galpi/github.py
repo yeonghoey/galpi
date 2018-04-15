@@ -5,7 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-def prepare_auth_request(redirect_uri):
+def auth_uri(redirect_uri):
     url = 'https://github.com/login/oauth/authorize'
     state = secrets.token_urlsafe(16)
     payload = {
@@ -35,13 +35,9 @@ def acquire_token(code):
     return res.json()['access_token']
 
 
-def acquire_userinfo(token):
+def acquire_user(token):
     res = requests.get(auth_url(token), auth=client_auth())
-    user = res.json().get('user', {})
-    return {
-        'username': user.get('login'),
-        'avatar_url': user.get('avatar_url'),
-    }
+    return res.json().get('user', {})
 
 
 def revoke_token(token):
