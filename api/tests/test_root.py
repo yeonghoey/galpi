@@ -10,6 +10,9 @@ def preset(user, client):
     client.put(f'/{user}/a/1', json={'link': 'a1.com'}, ok=True)
     client.put(f'/{user}/a/2', json={'link': 'a2.com'}, ok=True)
     client.put(f'/{user}/b', json={'link': 'b.com'}, ok=True)
+    client.put(f'/{user}/x', ok=True)
+    client.put(f'/{user}/x/x', ok=True)
+    client.put(f'/{user}/x/x/x', json={'link': 'xxx.com'}, ok=True)
 
 
 def test_get_all(monkeypatch, user, client):
@@ -20,7 +23,7 @@ def test_get_all(monkeypatch, user, client):
     client.get(f'/{user}/', ok=True)
     assert client[-1].json == client.json == {
         'user': user,
-        'path': '',
+        'path': None,
         'subs': {
             'a': {
                 'subs': {
@@ -30,6 +33,15 @@ def test_get_all(monkeypatch, user, client):
             },
             'b': {
                 'link': 'b.com'
+            },
+            'x': {
+                'subs': {
+                    'x': {
+                        'subs': {
+                            'x': {'link': 'xxx.com'}
+                        }
+                    }
+                }
             }
         }
     }
@@ -68,11 +80,19 @@ def test_put_item_without_link_considered_as_folder(monkeypatch, user, client):
     me(monkeypatch, user)
     client.put(f'/{user}/a', ok=True)
     client.get(f'/{user}/a', ok=True)
-    assert isinstance(client.json, list)
+    assert client.json == {
+        'user': user,
+        'path': 'a',
+        'subs': {},
+    }
 
     client.put(f'/{user}/b', json={'link': None}, ok=True)
     client.get(f'/{user}/b', ok=True)
-    assert isinstance(client.json, list)
+    assert client.json == {
+        'user': user,
+        'path': 'b',
+        'subs': {},
+    }
 
 
 def test_put_item_only_within_folder(monkeypatch, user, client):
