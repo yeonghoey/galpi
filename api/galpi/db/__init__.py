@@ -19,3 +19,4 @@ def make_db():
 
 
 db = LocalProxy(get_db)
+exceptions = LocalProxy(lambda: db.meta.client.exceptions)
