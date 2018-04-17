@@ -28,13 +28,6 @@ def app(monkeypatch):
 
 
 @pytest.fixture
-def me(monkeypatch):
-    def f(user):
-        monkeypatch.setattr('galpi.helper.me', lambda: user)
-    return f
-
-
-@pytest.fixture
 def client(app):
     with app.test_client() as c:
         yield TestClient(c)

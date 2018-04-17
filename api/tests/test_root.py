@@ -1,8 +1,12 @@
 from http import HTTPStatus
 
 
-def test_get_all(me, client, user):
-    me(user)
+def me(monkeypatch, user):
+    monkeypatch.setattr('galpi.blueprints.root.me', lambda: user)
+
+
+def test_get_all(monkeypatch, client, user):
+    me(monkeypatch, user)
     client.put(f'/{user}/a', json={'link': 'a.com'}, ok=True)
     client.put(f'/{user}/b', json={'link': 'b.com'}, ok=True)
 
@@ -15,23 +19,23 @@ def test_get_all(me, client, user):
     ]
 
 
-def test_put_item_overwrites(me, client, user):
-    me(user)
+def test_put_item_overwrites(monkeypatch, client, user):
+    me(monkeypatch, user)
     client.put(f'/{user}/a', json={'link': 'a.com'}, ok=True)
     client.put(f'/{user}/a', json={'link': 'a.org'}, ok=True)
     client.get(f'/{user}/a')
     assert client.json == {'user': user, 'name': 'a', 'link': 'a.org'}
 
 
-def test_put_item_owner_only(me, client, user):
-    me(None)
+def test_put_item_owner_only(monkeypatch, client, user):
+    me(monkeypatch, None)
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.FORBIDDEN
 
-    me('NOT_OWNER')
+    me(monkeypatch, 'NOT_OWNER')
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.FORBIDDEN
 
-    me(user)
+    me(monkeypatch, user)
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.CREATED
