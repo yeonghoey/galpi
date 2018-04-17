@@ -20,20 +20,21 @@ def get_all(user):
     return jsonify(all_)
 
 
-@bp.route('/<user>/<name>')
-def get_item(user, name):
-    item = items.get_item(user, name)
+@bp.route('/<user>/<path:path>')
+def get_item(user, path):
+    path = path.strip('/')
+    item = items.get_item(user, path)
     return jsonify(item)
 
 
-@bp.route('/<user>/<name>', methods=['PUT'])
-def put_item(user, name):
+@bp.route('/<user>/<path:path>', methods=['PUT'])
+def put_item(user, path):
     if me() != user:
         abort(HTTPStatus.FORBIDDEN)
-
+    path = path.strip('/')
     json = request.get_json()
-    link = json['link']
-    items.put_item(user, name, link)
+    link = json.get('link')
+    items.put_item(user, path, link)
     return ('', HTTPStatus.CREATED)
 
 

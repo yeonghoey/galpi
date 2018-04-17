@@ -78,12 +78,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: user
             AttributeType: S
-          - AttributeName: name
+          - AttributeName: path
             AttributeType: S
         KeySchema:
           - AttributeName: user
             KeyType: HASH
-          - AttributeName: name
+          - AttributeName: path
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

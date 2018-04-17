@@ -14,8 +14,8 @@ def test_get_all(monkeypatch, client, user):
     client.get(f'/{user}')
     client.get(f'/{user}/')
     assert client[-1].json == client.json == [
-        {'user': user, 'name': 'a', 'link': 'a.com'},
-        {'user': user, 'name': 'b', 'link': 'b.com'},
+        {'user': user, 'path': 'a', 'link': 'a.com'},
+        {'user': user, 'path': 'b', 'link': 'b.com'},
     ]
 
 
@@ -24,7 +24,7 @@ def test_put_item_overwrites(monkeypatch, client, user):
     client.put(f'/{user}/a', json={'link': 'a.com'}, ok=True)
     client.put(f'/{user}/a', json={'link': 'a.org'}, ok=True)
     client.get(f'/{user}/a')
-    assert client.json == {'user': user, 'name': 'a', 'link': 'a.org'}
+    assert client.json == {'user': user, 'path': 'a', 'link': 'a.org'}
 
 
 def test_put_item_owner_only(monkeypatch, client, user):

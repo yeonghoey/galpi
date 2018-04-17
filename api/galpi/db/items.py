@@ -9,15 +9,15 @@ def get_all(user):
     return r.get('Items', [])
 
 
-def get_item(user, name):
-    k = {'user': user, 'name': name}
+def get_item(user, path):
+    k = {'user': user, 'path': path}
     r = table.get_item(Key=k)
     return r.get('Item', {})
 
 
-def put_item(user, name, link):
+def put_item(user, path, link):
     table.put_item(Item={
         'user': user,
-        'name': name,
+        'path': path,
         'link': link,
     })
