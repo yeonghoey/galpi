@@ -32,4 +32,4 @@ def put_item(user, path, link):
 
 def delete_item(user, path):
     k = {'user': user, 'path': path}
-    table.delete_item(k)
+    table.delete_item(Key=k)
