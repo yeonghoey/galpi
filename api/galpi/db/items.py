@@ -15,7 +15,7 @@ def get_item(user, path):
     return r.get('Item', {})
 
 
-def get_descendants(user, path):
+def get_subs(user, path):
     c = (Key('user').eq(user) &
          Key('path').begins_with(f'{path}/'))
     r = table.query(KeyConditionExpression=c)

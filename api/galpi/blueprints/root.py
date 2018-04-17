@@ -1,3 +1,4 @@
+from collections import defaultdict
 from http import HTTPStatus
 
 from flask import abort, Blueprint, jsonify, request, session
@@ -16,8 +17,8 @@ def index():
 
 @bp.route('/<user>/')
 def get_all(user):
-    all_ = items.get_all(user)
-    return jsonify(all_)
+    subs = items.get_all(user)
+    return jsonify(compose(user, '', subs))
 
 
 @bp.route('/<user>/<path:path>')
@@ -25,8 +26,8 @@ def get_item(user, path):
     path = path.strip('/')
     item = items.get_item(user, path)
     if items.is_folder(item):
-        ds = items.get_descendants(user, path)
-        return jsonify(ds)
+        subs = items.get_subs(user, path)
+        return jsonify(compose(user, path, subs))
     else:
         return jsonify(item)
 
@@ -72,8 +73,8 @@ def delete_item(user, path):
 
     # If the item is a folder, it must be empty
     if items.is_folder(item):
-        ds = items.get_descendants(user, path)
-        if ds:
+        subs = items.get_subs(user, path)
+        if subs:
             abort(HTTPStatus.CONFLICT)
 
     items.delete_item(user, path)
@@ -86,3 +87,22 @@ def me():
         return None
     info = validate_token(token)
     return info.get('user')
+
+
+def compose(user, path, subs):
+    def tree():
+        return defaultdict(tree)
+
+    payload = tree()
+    payload['user'] = user
+    payload['path'] = path
+    for item in subs:
+        assert item['user'] == user
+        assert item['path'].startswith(path)
+        segments = item['path'].split('/')
+        parent = payload
+        for s in segments:
+            parent = parent['subs'][s]
+        if item['link'] is not None:
+            parent['link'] = item['link']
+    return dict(payload)

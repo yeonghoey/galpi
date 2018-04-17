@@ -18,12 +18,21 @@ def test_get_all(monkeypatch, user, client):
 
     client.get(f'/{user}', ok=True)
     client.get(f'/{user}/', ok=True)
-    assert client[-1].json == client.json == [
-        {'user': user, 'path': 'a', 'link': None},
-        {'user': user, 'path': 'a/1', 'link': 'a1.com'},
-        {'user': user, 'path': 'a/2', 'link': 'a2.com'},
-        {'user': user, 'path': 'b', 'link': 'b.com'},
-    ]
+    assert client[-1].json == client.json == {
+        'user': user,
+        'path': '',
+        'subs': {
+            'a': {
+                'subs': {
+                    '1': {'link': 'a1.com'},
+                    '2': {'link': 'a2.com'},
+                }
+            },
+            'b': {
+                'link': 'b.com'
+            }
+        }
+    }
 
 
 def test_get_folder(monkeypatch, user, client):
@@ -32,10 +41,14 @@ def test_get_folder(monkeypatch, user, client):
 
     client.get(f'/{user}/a', ok=True)
     client.get(f'/{user}/a/', ok=True)
-    assert client[-1].json == client.json == [
-        {'user': user, 'path': 'a/1', 'link': 'a1.com'},
-        {'user': user, 'path': 'a/2', 'link': 'a2.com'},
-    ]
+    assert client[-1].json == client.json == {
+        'user': user,
+        'path': 'a',
+        'subs': {
+            '1': {'link': 'a1.com'},
+            '2': {'link': 'a2.com'},
+        }
+    }
 
 
 def test_get_link(monkeypatch, user, client):
