@@ -1,8 +1,8 @@
 from http import HTTPStatus
 
 
-def test_get_all(client, user):
-    client.session({'user': user})
+def test_get_all(me, client, user):
+    me(user)
     client.put(f'/{user}/a', json={'link': 'a.com'}, ok=True)
     client.put(f'/{user}/b', json={'link': 'b.com'}, ok=True)
 
@@ -15,23 +15,23 @@ def test_get_all(client, user):
     ]
 
 
-def test_put_item_overwrites(client, user):
-    client.session({'user': user})
+def test_put_item_overwrites(me, client, user):
+    me(user)
     client.put(f'/{user}/a', json={'link': 'a.com'}, ok=True)
     client.put(f'/{user}/a', json={'link': 'a.org'}, ok=True)
     client.get(f'/{user}/a')
     assert client.json == {'user': user, 'name': 'a', 'link': 'a.org'}
 
 
-def test_put_item_owner_only(client, user):
-    client.session({'user': None})
+def test_put_item_owner_only(me, client, user):
+    me(None)
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.FORBIDDEN
 
-    client.session({'user': 'NOT_OWNER'})
+    me('NOT_OWNER')
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.FORBIDDEN
 
-    client.session({'user': user})
+    me(user)
     client.put(f'/{user}/a', json={'link': 'a.com'})
     assert client.status == HTTPStatus.CREATED

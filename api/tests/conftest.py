@@ -28,6 +28,13 @@ def app(monkeypatch):
 
 
 @pytest.fixture
+def me(monkeypatch):
+    def f(user):
+        monkeypatch.setattr('galpi.helper.me', lambda: user)
+    return f
+
+
+@pytest.fixture
 def client(app):
     with app.test_client() as c:
         yield TestClient(c)
@@ -54,10 +61,6 @@ class TestClient():
         clone = copy.copy(self)
         clone.last_offset = last_offset
         return clone
-
-    def session(self, d):
-        with self.client.session_transaction() as sess:
-            sess.update(d)
 
     def handle(self, method, *args, **kwargs):
         # Override defaults

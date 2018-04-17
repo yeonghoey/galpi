@@ -32,7 +32,6 @@ def exchange():
     # TODO: handle error
     token = github.acquire_token(code)
     session['token'] = token
-    update_userinfo()
 
     if referrer is not None:
         return redirect(referrer)
@@ -42,37 +41,17 @@ def exchange():
 
 @bp.route('/me')
 def me():
-    userinfo = update_userinfo()
-    if userinfo is None:
-        return ('', HTTPStatus.NO_CONTENT)
-    else:
-        return jsonify(userinfo)
+    token = session.get('token')
+    if token is None:
+        return jsonify({})
+    return jsonify(github.validate_token(token))
 
 
 @bp.route('/signout', methods=['POST'])
 def signout():
-    session.pop('userinfo', None)
     token = session.pop('token', None)
 
     if token is not None:
         github.revoke_token(token)
 
     return ('', HTTPStatus.NO_CONTENT)
-
-
-def update_userinfo():
-    token = session.get('token')
-    if token is None:
-        return None
-    else:
-        user = github.acquire_user(token)
-        userinfo = to_userinfo(user)
-        session['userinfo'] = userinfo
-        return userinfo
-
-
-def to_userinfo(user):
-    return {
-        'username': user.get('login'),
-        'avatar_url': user.get('avatar_url'),
-    }

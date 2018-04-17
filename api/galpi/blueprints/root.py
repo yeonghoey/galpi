@@ -1,8 +1,9 @@
 from http import HTTPStatus
 
-from flask import abort, Blueprint, jsonify, request, session
+from flask import abort, Blueprint, jsonify, request
 
 from galpi.db import items
+from galpi.helper import me
 
 
 bp = Blueprint('root', __name__)
@@ -27,8 +28,7 @@ def get_item(user, name):
 
 @bp.route('/<user>/<name>', methods=['PUT'])
 def put_item(user, name):
-    me = session.get('user', None)
-    if me is None or me != user:
+    if me() != user:
         abort(HTTPStatus.FORBIDDEN)
 
     json = request.get_json()

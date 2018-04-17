@@ -35,9 +35,14 @@ def acquire_token(code):
     return res.json()['access_token']
 
 
-def acquire_user(token):
-    res = requests.get(auth_url(token), auth=client_auth())
-    return res.json().get('user', {})
+def validate_token(token):
+    response = requests.get(auth_url(token), auth=client_auth())
+    json = response.json()
+    user = json.get('user', {})
+    return {
+        'user': user.get('login'),
+        'avatar_url': user.get('avatar_url'),
+    }
 
 
 def revoke_token(token):
