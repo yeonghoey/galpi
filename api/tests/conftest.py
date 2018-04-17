@@ -104,6 +104,10 @@ class TestClient():
         # .status is not compatible with http.HTTPStatus
         return self.last.status_code
 
+    @property
+    def headers(self):
+        return self.last.headers
+
 
 @pytest.fixture
 def generate_identifier():

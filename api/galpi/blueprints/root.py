@@ -38,7 +38,7 @@ def put_item(user, path):
 
     path = path.strip('/')
     json = request.get_json()
-    link = json.get('link')
+    link = json and json.get('link')
 
     # if dirname exists, it must be a folder
     dirname, _, basename = path.rpartition('/')
