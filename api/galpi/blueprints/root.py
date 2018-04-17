@@ -1,9 +1,9 @@
 from http import HTTPStatus
 
-from flask import abort, Blueprint, jsonify, request
+from flask import abort, Blueprint, jsonify, request, session
 
 from galpi.db import items
-from galpi.helper import me
+from galpi.github import validate_token
 
 
 bp = Blueprint('root', __name__)
@@ -35,3 +35,11 @@ def put_item(user, name):
     link = json['link']
     items.put_item(user, name, link)
     return ('', HTTPStatus.CREATED)
+
+
+def me():
+    token = session.get('token')
+    if token is None:
+        return None
+    info = validate_token(token)
+    return info.get('user')
