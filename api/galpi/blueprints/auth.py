@@ -4,7 +4,6 @@ from flask import (
     Blueprint, current_app, jsonify, redirect, request, session, url_for)
 
 from galpi import github
-from galpi.db import users
 
 
 bp = Blueprint('auth', __name__)
@@ -69,7 +68,6 @@ def update_userinfo():
         user = github.acquire_user(token)
         userinfo = to_userinfo(user)
         session['userinfo'] = userinfo
-        users.upsert(**userinfo)
         return userinfo
 
 

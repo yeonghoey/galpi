@@ -40,9 +40,6 @@ custom:
       <<: *environment
       CORS_ORIGIN: 'http://localhost:8080'
     dynamodb_seed:
-      - table: ${self:custom.name}-users
-        sources:
-          - ./dev/users.json
       - table: ${self:custom.name}-items
         sources:
           - ./dev/items.json
@@ -74,32 +71,19 @@ functions:
 
 resources:
   Resources:
-    Users:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.name}-users
-        AttributeDefinitions:
-          - AttributeName: username
-            AttributeType: S
-        KeySchema:
-          - AttributeName: username
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
     Items:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.name}-items
         AttributeDefinitions:
-          - AttributeName: username
+          - AttributeName: user
             AttributeType: S
-          - AttributeName: pathkey
+          - AttributeName: name
             AttributeType: S
         KeySchema:
-          - AttributeName: username
+          - AttributeName: user
             KeyType: HASH
-          - AttributeName: pathkey
+          - AttributeName: name
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

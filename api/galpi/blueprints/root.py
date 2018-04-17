@@ -1,8 +1,8 @@
 from http import HTTPStatus
-from flask import Blueprint, jsonify, request
 
-from galpi.db import users, items
-from galpi.helper import ensure_pathkey
+from flask import abort, Blueprint, jsonify, request, session
+
+from galpi.db import items
 
 
 bp = Blueprint('root', __name__)
@@ -13,26 +13,25 @@ def index():
     return ('', HTTPStatus.NO_CONTENT)
 
 
-@bp.route('/<username>/')
-def user(username):
-    payload = users.get(username)
-    # TODO: Filter if current user is not allowed to read
-    return jsonify(payload)
+@bp.route('/<user>/')
+def get_all(user):
+    all_ = items.get_all(user)
+    return jsonify(all_)
 
 
-# @bp.route('/<username>/<path:pathquery>')
-# def query(username, pathquery):
-#     payload = items.query(username, pathquery)
-#     return jsonify(payload)
+@bp.route('/<user>/<name>')
+def get_item(user, name):
+    item = items.get_item(user, name)
+    return jsonify(item)
 
 
-# @bp.route('/<username>/<path:pathquery>', methods=['PUT'])
-# def put(username, pathquery):
-#     pathkey = ensure_pathkey(pathquery)
+@bp.route('/<user>/<name>', methods=['PUT'])
+def put_item(user, name):
+    me = session.get('user', None)
+    if me is None or me != user:
+        abort(HTTPStatus.FORBIDDEN)
 
-#     # TODO: auth check
-#     payload = request.get_json()
-#     linkto = payload['linkto']
-#     description = payload.get('description')
-#     items.put(username, pathkey, linkto, description)
-#     return ('', HTTPStatus.CREATED)
+    json = request.get_json()
+    link = json['link']
+    items.put_item(user, name, link)
+    return ('', HTTPStatus.CREATED)

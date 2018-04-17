@@ -1,12 +1,11 @@
 import copy
 from functools import partial
 import json
-import uuid
-
 import pytest
+import random
+
 
 from galpi import create_app
-from galpi.helper import ensure_pathkey
 
 
 @pytest.fixture
@@ -26,12 +25,6 @@ def app(monkeypatch):
 
     app = create_app()
     yield app
-
-
-@pytest.fixture
-def app_context(app):
-    with app.app_context():
-        yield
 
 
 @pytest.fixture
@@ -62,6 +55,10 @@ class TestClient():
         clone.last_offset = last_offset
         return clone
 
+    def session(self, d):
+        with self.client.session_transaction() as sess:
+            sess.update(d)
+
     def handle(self, method, *args, **kwargs):
         # Override defaults
         kwargs.setdefault('follow_redirects', True)
@@ -88,23 +85,6 @@ class TestClient():
 
         return response
 
-    def batch_put(self, username, data_string):
-        lines = data_string.strip().splitlines()
-        items = {}
-        for l in lines:
-            a, b = l.split('|')
-            pathquery, linkto = a.strip(), b.strip()
-            self.put(f'/{username}/{pathquery}',
-                     json={'linkto': linkto},
-                     ok=True)
-            items[pathquery] = {
-                'username': username,
-                'pathkey': ensure_pathkey(pathquery),
-                'linkto': linkto,
-                'description': None,
-            }
-        return items
-
     @property
     def last(self):
         return self.history[self.last_offset - 1]
@@ -130,11 +110,16 @@ class TestClient():
 
 
 @pytest.fixture
-def username():
+def generate_identifier():
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789-_'
+    return lambda k: ''.join(random.choices(chars, k=k))
+
+
+@pytest.fixture
+def user(generate_identifier):
     """Generates a unique user name.
 
     Since running a single database instance, it is necessary to use unique
     names across tests, othwerwise therer would be some collisions.
     """
-    # TODO: Adapt when implements user name patterns and rules
-    return str(uuid.uuid4())
+    return generate_identifier(16)

@@ -1,7 +1,4 @@
 [
-  {"username": "yeonghoey", "pathkey": "g", "linkto": "https://google.com"},
-  {"username": "yeonghoey", "pathkey": "y", "linkto": "https://youtube.com"},
-  {"username": "yeonghoey", "pathkey": "gh", "linkto": "https://github.com/yeonghoey"},
-  {"username": "yeonghoey", "pathkey": "gh/g", "linkto": "https://github.com/yeonghoey/galpi"},
-  {"username": "yeonghoey", "pathkey": "gh/y", "linkto": "https://github.com/yeonghoey/yeonghoey"}
+  {"user": "yeonghoey", "name": "g", "link": "https://google.com"},
+  {"user": "yeonghoey", "name": "y", "link": "https://youtube.com"}
 ]
