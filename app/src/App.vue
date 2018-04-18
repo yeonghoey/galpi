@@ -1,10 +1,7 @@
 <template>
-  <div class="d-flex flex-column h-100v">
-    <AppNavbar class="flex-shrink-0"/>
-    <router-view
-      class="flex-fill"
-      :key="$route.path"
-    />
+  <div>
+    <AppNavbar/>
+    <router-view :key="$route.path"/>
   </div>
 </template>
 
