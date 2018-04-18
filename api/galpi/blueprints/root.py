@@ -29,7 +29,9 @@ def get_item(user, path):
         subs = items.get_subs(user, path)
         return jsonify(compose(user, path, subs))
     else:
-        return jsonify(item)
+        base = [user, path]
+        link = item['link']
+        return jsonify({'base': base, 'link': link})
 
 
 @bp.route('/<user>/<path:path>', methods=['PUT'])
@@ -93,16 +95,16 @@ def compose(user, path, subs):
     def tree():
         return defaultdict(tree)
 
+    base = ([user] if path is None else
+            [user] + path.split('/'))
+    prefix = f'{path}/' if path is not None else ''
     payload = tree()
-    payload['user'] = user
-    payload['path'] = path
+    payload['base'] = base
     payload['subs'] = tree()
-
-    base = f'{path}/' if path is not None else ''
     for item in subs:
         assert item['user'] == user
-        assert item['path'].startswith(base)
-        subpath = item['path'][len(base):]
+        assert item['path'].startswith(prefix)
+        subpath = item['path'][len(prefix):]
         segments = subpath.split('/')
         parent = payload
         for s in segments:

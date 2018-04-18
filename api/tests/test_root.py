@@ -22,8 +22,7 @@ def test_get_all(monkeypatch, user, client):
     client.get(f'/{user}', ok=True)
     client.get(f'/{user}/', ok=True)
     assert client[-1].json == client.json == {
-        'user': user,
-        'path': None,
+        'base': [user],
         'subs': {
             'a': {
                 'subs': {
@@ -54,11 +53,19 @@ def test_get_folder(monkeypatch, user, client):
     client.get(f'/{user}/a', ok=True)
     client.get(f'/{user}/a/', ok=True)
     assert client[-1].json == client.json == {
-        'user': user,
-        'path': 'a',
+        'base': [user, 'a'],
         'subs': {
             '1': {'link': 'a1.com'},
             '2': {'link': 'a2.com'},
+        }
+    }
+
+    client.get(f'/{user}/x/x', ok=True)
+    client.get(f'/{user}/x/x/', ok=True)
+    assert client[-1].json == client.json == {
+        'base': [user, 'x', 'x'],
+        'subs': {
+            'x': {'link': 'xxx.com'},
         }
     }
 
@@ -70,8 +77,7 @@ def test_get_link(monkeypatch, user, client):
     client.get(f'/{user}/b', ok=True)
     client.get(f'/{user}/b/', ok=True)
     assert client[-1].json == client.json == {
-        'user': user,
-        'path': 'b',
+        'base': [user, 'b'],
         'link': 'b.com'
     }
 
@@ -81,16 +87,14 @@ def test_put_item_without_link_considered_as_folder(monkeypatch, user, client):
     client.put(f'/{user}/a', ok=True)
     client.get(f'/{user}/a', ok=True)
     assert client.json == {
-        'user': user,
-        'path': 'a',
+        'base': [user, 'a'],
         'subs': {},
     }
 
     client.put(f'/{user}/b', json={'link': None}, ok=True)
     client.get(f'/{user}/b', ok=True)
     assert client.json == {
-        'user': user,
-        'path': 'b',
+        'base': [user, 'b'],
         'subs': {},
     }
 
@@ -118,14 +122,14 @@ def test_put_item_updates(monkeypatch, user, client):
     assert client.status == HTTPStatus.CREATED
     assert client.headers['Content-Location'] == f'/{user}/a'
     client.get(f'/{user}/a')
-    assert client.json == {'user': user, 'path': 'a', 'link': 'a.com'}
+    assert client.json == {'base': [user, 'a'], 'link': 'a.com'}
 
     # Update
     client.put(f'/{user}/a', json={'link': 'a.org'})
     assert client.status == HTTPStatus.NO_CONTENT
     assert client.headers['Content-Location'] == f'/{user}/a'
     client.get(f'/{user}/a')
-    assert client.json == {'user': user, 'path': 'a', 'link': 'a.org'}
+    assert client.json == {'base': [user, 'a'], 'link': 'a.org'}
 
     # Updating a link as a folder is not allowed
     client.put(f'/{user}/a')
