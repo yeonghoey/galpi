@@ -53,7 +53,7 @@ def put_item(user, path):
     is_update = bool(old)
     if is_update:
         old_is_folder = items.is_folder(old)
-        new_is_folder = bool(link is None)
+        new_is_folder = link is None
         if old_is_folder != new_is_folder:
             abort(HTTPStatus.CONFLICT)
 
@@ -107,9 +107,9 @@ def compose(user, path, subs):
         parent = payload
         for s in segments:
             parent = parent['subs'][s]
-        if item['link'] is None:
-            parent['subs'] = tree()
-        else:
+        if 'link' in item:
             parent['link'] = item['link']
+        else:
+            parent['subs'] = tree()
 
     return dict(payload)

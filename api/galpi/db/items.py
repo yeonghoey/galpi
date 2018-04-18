@@ -23,11 +23,15 @@ def get_subs(user, path):
 
 
 def is_folder(item):
-    return bool(item and item.get('link') is None)
+    return bool('user' in item and
+                'path' in item and
+                'link' not in item)
 
 
 def put_item(user, path, link):
-    table.put_item(Item={'user': user, 'path': path, 'link': link})
+    item = ({'user': user, 'path': path, 'link': link} if link else
+            {'user': user, 'path': path})
+    table.put_item(Item=item)
 
 
 def delete_item(user, path):
