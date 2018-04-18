@@ -45,7 +45,6 @@ export default {
     signInRequired() {
       return this.me == null;
     },
-
     ...mapState('auth', [
       'me',
       'avatarURL',
@@ -64,11 +63,9 @@ export default {
       this.refreshRequired();
       window.location.href = `${process.env.API_BASE_URL}/auth/signin`;
     },
-
     ...mapMutations('auth', [
       'refreshRequired',
     ]),
-
     ...mapActions('auth', [
       'checkAuth',
       'signOut',
