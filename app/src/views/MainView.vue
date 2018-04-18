@@ -17,7 +17,6 @@
         :owner="owner"
         :item="item"
         />
-      </div>
     </div>
   </div>
 </template>

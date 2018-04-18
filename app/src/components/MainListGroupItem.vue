@@ -10,12 +10,12 @@
         </b-col>
         <b-col class="text-right">
           <b-row>
-            <b-col>  
+            <b-col>
               <p class="mb-0"><small>https://galpi.io</small><b>{{ path }}</b></p>
             </b-col>
           </b-row>
           <b-row align-v="center">
-            <b-col>  
+            <b-col>
               <small class="text-secondary">{{ link }}</small>
               <i class="fa fa-edit align-middle"></i>
             </b-col>
@@ -29,7 +29,7 @@
 <script>
 export default {
   name: 'MainListGroupItem',
-  
+
   props: {
     owner: {
       type: Boolean,
