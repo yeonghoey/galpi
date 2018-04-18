@@ -82,6 +82,17 @@ def test_get_link(monkeypatch, user, client):
     }
 
 
+def test_get_not_found(monkeypatch, user, client):
+    me(monkeypatch, user)
+    # Currently, there is no way to recognize
+    # whether or not a user is registered.
+    client.get(f'/{user}', ok=True)
+
+    # But if the target resource doesn't exist, it should be an error.
+    client.get(f'/{user}/x')
+    assert client.status == HTTPStatus.NOT_FOUND
+
+
 def test_put_item_without_link_considered_as_folder(monkeypatch, user, client):
     me(monkeypatch, user)
     client.put(f'/{user}/a', ok=True)

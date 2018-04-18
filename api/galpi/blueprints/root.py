@@ -25,13 +25,16 @@ def get_all(user):
 def get_item(user, path):
     path = path.strip('/')
     item = items.get_item(user, path)
-    if items.is_folder(item):
-        subs = items.get_subs(user, path)
-        return jsonify(compose(user, path, subs))
-    else:
+
+    if items.is_link(item):
         base = [user, path]
         link = item['link']
         return jsonify({'base': base, 'link': link})
+    elif items.is_folder(item):
+        subs = items.get_subs(user, path)
+        return jsonify(compose(user, path, subs))
+    else:
+        abort(HTTPStatus.NOT_FOUND)
 
 
 @bp.route('/<user>/<path:path>', methods=['PUT'])

@@ -22,6 +22,12 @@ def get_subs(user, path):
     return r.get('Items', [])
 
 
+def is_link(item):
+    return bool('user' in item and
+                'path' in item and
+                'link' in item)
+
+
 def is_folder(item):
     return bool('user' in item and
                 'path' in item and
