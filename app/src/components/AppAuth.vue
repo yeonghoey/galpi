@@ -13,7 +13,6 @@
         Sign in with GitHub
       </b-button>
     </b-nav-item>
-
     <b-nav-item-dropdown
       v-else
       right
@@ -23,8 +22,8 @@
           rounded="circle"
           width="32"
           height="32"
-          :alt="myUsername"
-          :src="myAvatarURL"
+          :alt="me"
+          :src="avatarURL"
           />
       </template>
       <b-dropdown-item
@@ -44,12 +43,12 @@ export default {
 
   computed: {
     signInRequired() {
-      return this.myUsername == null;
+      return this.me == null;
     },
 
     ...mapState('auth', [
-      'myUsername',
-      'myAvatarURL',
+      'me',
+      'avatarURL',
       'refresh',
     ]),
   },
@@ -69,6 +68,7 @@ export default {
     ...mapMutations('auth', [
       'refreshRequired',
     ]),
+
     ...mapActions('auth', [
       'checkAuth',
       'signOut',

@@ -12,8 +12,8 @@ export default new Vuex.Store({
     createPersistedState({
       storage: window.localStorage,
       paths: [
-        'auth.myUsername',
-        'auth.myAvatarURL',
+        'auth.me',
+        'auth.avatarURL',
       ],
     }),
     createPersistedState({

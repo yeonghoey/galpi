@@ -21,16 +21,16 @@ export const mutations = {
     state.refresh = true;
   },
 
-  update(state, userinfo) {
-    state.myUsername = userinfo.username;
-    state.myAvatarURL = userinfo.avatar_url;
+  update(state, data) {
+    state.me = data.user;
+    state.avatarURL = data.avatar_url;
     state.refresh = false;
   },
 };
 
 const state = {
-  myUsername: undefined,
-  myAvatarURL: undefined,
+  me: undefined,
+  avatarURL: undefined,
   refresh: true,
 };
 
