@@ -15,7 +15,7 @@ export default new Router({
       component: HomeView,
     },
     {
-      path: '/:username',
+      path: '/:user/:path*',
       name: 'MainView',
       component: MainView,
       props: true,

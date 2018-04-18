@@ -1,30 +1,24 @@
 <template>
-  <div class="d-flex align-items-stretch">
-    <MainSidebar
-      class="main-sidebar"
-      :username="username"
-      />
+  <div>
+    {{ user }} / {{ path }}
   </div>
 </template>
 
 <script>
-import MainSidebar from '@/components/MainSidebar';
-
 export default {
   name: 'MainView',
 
   props: {
-    username: String,
-  },
-
-  components: {
-    MainSidebar,
+    user: {
+      type: String,
+      required: true,
+    },
+    path: {
+      type: String,
+    },
   },
 };
 </script>
 
 <style scoped>
-.main-sidebar {
-  flex: 0 1 240px;
-}
 </style>
