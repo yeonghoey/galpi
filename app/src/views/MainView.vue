@@ -1,20 +1,43 @@
 <template>
   <div>
-    <MainBreadcrumb
-      :owner="owner"
-      :item="item"
-      />
-    {{ item }}
+    <div
+      v-if="renderUI"
+      class="h-100 d-flex flex-column"
+      >
+      <AppNavbar
+        class="flex-shrink-0"
+        />
+      <MainBreadcrumb
+        class="flex-shrink-0"
+        :owner="owner"
+        :item="item"
+        />
+      <MainContent
+        class="flex-fill"
+        :owner="owner"
+        :item="item"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import api from '@/api';
+
+import AppNavbar from '@/components/AppNavbar';
 import MainBreadcrumb from '@/components/MainBreadcrumb';
+import MainContent from '@/components/MainContent';
 
 export default {
   name: 'MainView',
+
+  components: {
+    AppNavbar,
+    MainBreadcrumb,
+    MainContent,
+  },
 
   props: {
     user: {
@@ -27,12 +50,9 @@ export default {
     },
   },
 
-  components: {
-    MainBreadcrumb,
-  },
-
   data() {
     return {
+      renderUI: false,
       item: {},
     };
   },
@@ -51,6 +71,7 @@ export default {
       if (link) {
         window.location.href = link;
       } else {
+        this.renderUI = true;
         this.item = response.data;
       }
     });

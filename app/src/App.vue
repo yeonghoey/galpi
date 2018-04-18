@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <AppNavbar/>
-    <router-view :key="$route.path"/>
-  </div>
+  <router-view
+    class="h-100v"
+    :key="$route.path"
+    />
 </template>
 
 <script>
-import AppNavbar from '@/components/AppNavbar';
-
 export default {
   name: 'App',
-  components: {
-    AppNavbar,
-  },
 };
 </script>
