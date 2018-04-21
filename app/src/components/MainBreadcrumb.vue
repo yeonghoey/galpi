@@ -10,6 +10,7 @@
     <b-button
       v-if="owner"
       class="ml-auto"
+      variant="success"
       >
       New
     </b-button>

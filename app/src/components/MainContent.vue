@@ -1,7 +1,6 @@
 <template>
   <div class="p-2">
     <MainListGroup v-bind="$props"/>
-    {{ item }}
   </div>
 </template>
 
