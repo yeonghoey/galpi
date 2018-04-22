@@ -1,11 +1,8 @@
 <template>
-  <b-navbar
-    toggleable="md"
-    type="dark"
-    variant="info"
-    sticky
-    >
-
+  <b-navbar toggleable="md"
+            type="dark"
+            variant="info"
+            sticky>
     <b-navbar-brand to="/">
       <span class="fa fa-bookmark-o p-1"></span>
       Galpi

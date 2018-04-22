@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-    <MainListGroup v-bind="$props"/>
+    <MainListGroup/>
   </div>
 </template>
 
@@ -12,17 +12,6 @@ export default {
 
   components: {
     MainListGroup,
-  },
-
-  props: {
-    owner: {
-      type: Boolean,
-      required: true,
-    },
-    item: {
-      type: Object,
-      required: true,
-    },
   },
 };
 </script>

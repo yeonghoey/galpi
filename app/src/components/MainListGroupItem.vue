@@ -1,11 +1,11 @@
 <template>
-  <b-list-group-item
-    class="d-flex justify-content-between"
-    @mouseover="hovering = true"
-    @mouseout="hovering = false"
-    >
+  <b-list-group-item class="d-flex justify-content-between"
+                     @mouseover="hovering = true"
+                     @mouseout="hovering = false">
     <div class="align-self-center mr-4">
-      <i class="fa fa-lg" :class="icon"></i>
+      <i class="fa fa-lg"
+         :class="icon">
+      </i>
     </div>
 
     <div class="flex-fill d-flex">
@@ -18,47 +18,40 @@
         <div class="align-self-center flex-fill">
           <div v-if="link">
             <div v-if="editing">
-              <b-form inline @submit.prevent="saveEditing">
+              <b-form @submit.prevent="saveEditing"
+                      inline>
                 <b-input-group class="flex-fill">
-                  <b-form-input
-                    type="url"
-                    placeholder="Link"
-                    v-model.trim="editingURI"
-                    >
+                  <b-form-input type="url"
+                                placeholder="Link"
+                                v-model.trim="editingURI">
                   </b-form-input>
                   <b-input-group-append>
-                    <b-button
-                      type="submit"
-                      variant="secondary"
-                      >
+                    <b-button type="submit"
+                              variant="secondary">
                       Save
                     </b-button>
                   </b-input-group-append>
                 </b-input-group>
-
                 <div class="mx-2">
                   or
-                  <b-button
-                    class="px-0"
-                    size="sm"
-                    variant="link"
-                    @click="stopEditing">
+                  <b-button @click="stopEditing"
+                            class="px-0"
+                            size="sm"
+                            variant="link">
                     Cancel
                   </b-button>
                 </div>
               </b-form>
             </div>
             <div v-else > <!-- editing -->
-              <b-link
-                class="text-secondary"
-                :href="link">
+              <b-link :href="link"
+                      class="text-secondary">
                 {{ link }}
               </b-link>
-              <b-button
-                v-if="owner"
-                size="sm"
-                variant="muted"
-                @click="startEditing">
+              <b-button v-if="owner"
+                        @click="startEditing"
+                        size="sm"
+                        variant="muted">
                 <i class="fa fa-edit"></i>
               </b-button>
             </div>
@@ -71,12 +64,10 @@
         </div>
 
         <div class="align-self-center">
-          <b-button
-            class="p-0"
-            v-show="deletable"
-            variant="link"
-            @click="deleteItem"
-            >
+          <b-button v-show="deletable"
+                    @click="deleteItem"
+                    class="p-0"
+                    variant="link">
             <i class="fa fa-times text-secondary"></i>
           </b-button>
         </div>
@@ -86,6 +77,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
 import _ from 'lodash';
 import api from '@/api';
 
@@ -93,19 +85,11 @@ export default {
   name: 'MainListGroupItem',
 
   props: {
-    owner: {
-      type: Boolean,
-      required: true,
-    },
-    base: {
-      type: Array,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
     },
-    item: {
+    body: {
       type: Object,
       required: true,
     },
@@ -120,6 +104,12 @@ export default {
   },
 
   computed: {
+    ...mapState('main', [
+      'owner',
+    ]),
+    ...mapGetters('main', [
+      'base',
+    ]),
     relPath() {
       // ['a', 'b'], 'c' => '/a/b/c'
       const segs = _.concat([''], this.base, this.name);
@@ -129,10 +119,10 @@ export default {
       return `${process.env.APP_BASE_URL}${this.relPath}`;
     },
     link() {
-      return _.get(this.item, 'link', '');
+      return _.get(this.body, 'link', '');
     },
     count() {
-      const subs = _.get(this.item, 'subs', {});
+      const subs = _.get(this.body, 'subs', {});
       return _.size(subs);
     },
     countUnit() {
@@ -150,6 +140,9 @@ export default {
   },
 
   methods: {
+    ...mapActions('main', [
+      'putItem',
+    ]),
     startEditing() {
       this.editing = true;
       this.editingURI = this.link;
@@ -158,9 +151,13 @@ export default {
       this.editing = false;
     },
     saveEditing() {
-      api.put(this.relPath, { link: this.editingURI })
-        .then(() => {
-        })
+      const body = { link: this.editingURI };
+      const payload = {
+        path: this.relPath,
+        name: this.name,
+        body,
+      };
+      this.putItem(payload)
         .finally(() => {
           this.editing = false;
         });

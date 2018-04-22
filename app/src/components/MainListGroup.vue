@@ -1,18 +1,14 @@
 <template>
   <b-list-group>
-    <MainListGroupItem
-      v-for="(item, name) in subs"
-      :key="name"
-      :owner="owner"
-      :base="base"
-      :name="name"
-      :item="item"
-      />
+    <MainListGroupItem v-for="(body, name) in subs"
+                       :key="name"
+                       :name="name"
+                       :body="body"/>
   </b-list-group>
 </template>
 
 <script>
-import _ from 'lodash';
+import { mapGetters } from 'vuex';
 import MainListGroupItem from '@/components/MainListGroupItem';
 
 export default {
@@ -22,24 +18,10 @@ export default {
     MainListGroupItem,
   },
 
-  props: {
-    owner: {
-      type: Boolean,
-      required: true,
-    },
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-
   computed: {
-    base() {
-      return _.get(this.item, 'base', []);
-    },
-    subs() {
-      return _.get(this.item, 'subs', {});
-    },
+    ...mapGetters('main', [
+      'subs',
+    ]),
   },
 };
 </script>
