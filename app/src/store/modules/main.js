@@ -8,10 +8,16 @@ export const actions = {
         commit('setItem', response.data);
       });
   },
-  putItem({ commit }, { path, name, body }) {
+  putSub({ commit }, { path, name, body }) {
     return api.put(path, body)
       .then((response) => {
         commit('updateSub', { name, body });
+      });
+  },
+  deleteSub({ commit }, { path, name }) {
+    return api.delete(path)
+      .then((response) => {
+        commit('deleteSub', name);
       });
   },
 };
@@ -33,7 +39,12 @@ export const mutations = {
     state.item = item;
   },
   updateSub(state, { name, body }) {
-    _.set(state.item, `subs.${name}`, body);
+    state.item = _.set(_.clone(state.item), `subs.${name}`, body);
+  },
+  deleteSub(state, name) {
+    delete state.item.subs[name];
+    state.item = _.omit(state.item, [`subs.${name}`]);
+    // _.unset(state.item, `subs.${name}`);
   },
 };
 

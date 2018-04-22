@@ -62,6 +62,7 @@ export default {
 
   created() {
     const relPath = `/${this.user}/${this.path}`;
+    this.setOwner(this.me === this.user);
     this.getItem(relPath);
   },
 
@@ -71,7 +72,6 @@ export default {
       if (link) {
         window.location.href = link;
       } else {
-        this.setOwner(this.me === this.user);
         this.renderUI = true;
       }
     },

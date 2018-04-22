@@ -79,7 +79,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import _ from 'lodash';
-import api from '@/api';
 
 export default {
   name: 'MainListGroupItem',
@@ -141,7 +140,8 @@ export default {
 
   methods: {
     ...mapActions('main', [
-      'putItem',
+      'putSub',
+      'deleteSub',
     ]),
     startEditing() {
       this.editing = true;
@@ -157,13 +157,17 @@ export default {
         name: this.name,
         body,
       };
-      this.putItem(payload)
+      this.putSub(payload)
         .finally(() => {
           this.editing = false;
         });
     },
     deleteItem() {
-      api.delete(this.relPath);
+      const payload = {
+        path: this.relPath,
+        name: this.name,
+      };
+      this.deleteSub(payload);
     },
   },
 };
