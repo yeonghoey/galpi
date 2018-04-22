@@ -61,9 +61,9 @@ export default {
   },
 
   created() {
-    const relPath = `/${this.user}/${this.path}`;
+    const path = `/${this.user}/${this.path}`;
     this.setOwner(this.me === this.user);
-    this.getItem(relPath);
+    this.getItem(path);
   },
 
   watch: {

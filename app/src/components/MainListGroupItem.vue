@@ -18,12 +18,12 @@
         <div class="align-self-center flex-fill">
           <div v-if="link">
             <div v-if="editing">
-              <b-form @submit.prevent="saveEditing"
+              <b-form @submit.stop.prevent="saveEditing"
                       inline>
                 <b-input-group class="flex-fill">
                   <b-form-input type="url"
                                 placeholder="Link"
-                                v-model.trim="editingURI">
+                                v-model.trim="editingURL">
                   </b-form-input>
                   <b-input-group-append>
                     <b-button type="submit"
@@ -98,7 +98,7 @@ export default {
     return {
       hovering: false,
       editing: false,
-      editingURI: '',
+      editingURL: '',
     };
   },
 
@@ -108,11 +108,11 @@ export default {
     ]),
     ...mapGetters('main', [
       'base',
+      'makePath',
     ]),
     relPath() {
       // ['a', 'b'], 'c' => '/a/b/c'
-      const segs = _.concat([''], this.base, this.name);
-      return _.join(segs, '/');
+      return this.makePath(this.name);
     },
     absPath() {
       return `${process.env.APP_BASE_URL}${this.relPath}`;
@@ -145,13 +145,13 @@ export default {
     ]),
     startEditing() {
       this.editing = true;
-      this.editingURI = this.link;
+      this.editingURL = this.link;
     },
     stopEditing() {
       this.editing = false;
     },
     saveEditing() {
-      const body = { link: this.editingURI };
+      const body = { link: this.editingURL };
       const payload = {
         path: this.relPath,
         name: this.name,

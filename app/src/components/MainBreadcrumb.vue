@@ -1,24 +1,27 @@
 <template>
-  <b-breadcrumb class="align-items-center">
-    <b-breadcrumb-item v-for="(item, index) in items"
-                       :key="index"
-                       :active="index === items.length-1"
-                       :class="index === 0 ? classUser : []"
-                       v-bind="item"/>
-    <b-button v-if="owner"
-              class="ml-auto"
-              variant="success">
-      New
-    </b-button>
-  </b-breadcrumb>
+  <div>
+    <b-breadcrumb class="align-items-center">
+      <b-breadcrumb-item v-for="(item, index) in items"
+                        :key="index"
+                        :active="index === items.length-1"
+                        :class="index === 0 ? classUser : []"
+                        v-bind="item"/>
+      <MainNewModal class="ml-auto"/>
+    </b-breadcrumb>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import _ from 'lodash';
+import MainNewModal from '@/components/MainNewModal';
 
 export default {
   name: 'MainBreadcrumb',
+
+  components: {
+    MainNewModal,
+  },
 
   computed: {
     ...mapState('main', [

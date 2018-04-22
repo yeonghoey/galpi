@@ -26,6 +26,12 @@ export const getters = {
   base(state) {
     return _.get(state.item, 'base', []);
   },
+  makePath(state, getters_) {
+    return (name) => {
+      const segs = _.concat([''], getters_.base, name);
+      return _.join(segs, '/');
+    };
+  },
   subs(state) {
     return _.get(state.item, 'subs', {});
   },
