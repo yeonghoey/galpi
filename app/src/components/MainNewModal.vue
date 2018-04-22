@@ -9,7 +9,7 @@
              header-bg-variant="primary"
              header-text-variant="light"
              @ok.prevent="onOK"
-             @shown="clearInputs"
+             @shown="onShown"
              title="New"
              :ok-title="`Create ${typeName}`"
              size="lg">
@@ -19,8 +19,12 @@
             class="w-75 align-items-center"
             :prepend="basePath">
             <b-form-input v-model.trim="name"
+                          ref="nameInput"
                           type="text"
                           class="flex-fill"
+                          pattern="[A-Za-z0-9_-]+"
+                          placeholder="Name"
+                          title="Name should only match [A-Za-z0-9-_]+"
                           required>
             </b-form-input>
             <b-form-checkbox v-model="isFolder"
@@ -30,7 +34,10 @@
           </b-input-group>
         </b-form-group>
         <b-form-group v-if="!isFolder">
-            <b-form-input v-model.trim="url" required>
+          <b-form-input v-model.trim="url"
+                        type="url"
+                        placeholder="Link"
+                        required>
             </b-form-input>
         </b-form-group>
         <!-- For accepting enter key submit -->
@@ -67,15 +74,16 @@ export default {
   },
 
   methods: {
+    onShown() {
+      this.name = '';
+      this.url = '';
+      this.$refs.nameInput.focus();
+    },
     onOK() {
       this.$refs.submit.click();
     },
     onSubmit() {
       this.$refs.modal.hide();
-    },
-    clearInputs() {
-      this.name = '';
-      this.url = '';
     },
   },
 };
