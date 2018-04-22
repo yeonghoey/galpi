@@ -119,11 +119,12 @@ export default {
 
   computed: {
     relPath() {
-      const segs = _.concat(this.base, this.name);
+      // ['a', 'b'], 'c' => '/a/b/c'
+      const segs = _.concat([''], this.base, this.name);
       return _.join(segs, '/');
     },
     absPath() {
-      return `${process.env.APP_BASE_URL}/${this.relPath}`;
+      return `${process.env.APP_BASE_URL}${this.relPath}`;
     },
     link() {
       return _.get(this.item, 'link', '');
