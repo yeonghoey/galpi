@@ -1,54 +1,85 @@
 <template>
-  <b-list-group-item class="d-flex align-items-center justify-content-between">
-    <div>
+  <b-list-group-item
+    class="d-flex justify-content-between"
+    @mouseover="hovering = true"
+    @mouseout="hovering = false"
+    >
+    <div class="align-self-center mr-4">
       <i class="fa fa-lg" :class="icon"></i>
     </div>
 
-    <div class="flex-fill">
-      <b-container class="p-0 mx-4">
-        <b-row align-h="start">
-          <b-col cols="2">
-            <b-link :href="absPath">
-              <h4 class="d-inline m-0">{{ name }}</h4>
-            </b-link>
-          </b-col>
-          <b-col>
-            <div v-if="link">
+    <div class="flex-fill d-flex">
+      <div class="align-self-center my-1 w-25">
+        <b-link :href="absPath">
+          <h3 class="d-inline m-0">{{ name }}</h3>
+        </b-link>
+      </div>
+      <div class="w-75 d-flex justify-content-between">
+        <div class="align-self-center flex-fill">
+          <div v-if="link">
+            <div v-if="editing">
+              <b-form inline @submit.prevent="saveEditing">
+                <b-input-group class="flex-fill">
+                  <b-form-input
+                    type="url"
+                    placeholder="Link"
+                    v-model.trim="editingURI"
+                    >
+                  </b-form-input>
+                  <b-input-group-append>
+                    <b-button
+                      type="submit"
+                      variant="secondary"
+                      >
+                      Save
+                    </b-button>
+                  </b-input-group-append>
+                </b-input-group>
+
+                <div class="mx-2">
+                  or
+                  <b-button
+                    class="px-0"
+                    size="sm"
+                    variant="link"
+                    @click="stopEditing">
+                    Cancel
+                  </b-button>
+                </div>
+              </b-form>
+            </div>
+            <div v-else > <!-- editing -->
               <b-link
                 class="text-secondary"
                 :href="link">
                 {{ link }}
               </b-link>
+              <b-button
+                v-if="owner"
+                size="sm"
+                variant="muted"
+                @click="startEditing">
+                <i class="fa fa-edit"></i>
+              </b-button>
             </div>
-            <div v-else>
-              <span class="text-secondary">
-                {{ count }} {{ countUnit }}
-              </span>
-            </div>
-          </b-col>
-        </b-row>
-      </b-container>
-    </div>
+          </div>
+          <div v-else> <!-- link -->
+            <span class="text-secondary">
+              {{ count }} {{ countUnit }}
+            </span>
+          </div>
+        </div>
 
-    <div>
-      <b-dropdown variant="outline-muted" no-caret right>
-        <template slot="button-content">
-          <i class="fa fa-bars"></i>
-        </template>
-        <b-dropdown-header>
-          <abbr title="You can access the item with this link">{{ absPath }}</abbr>
-        </b-dropdown-header>
-        <b-dropdown-divider></b-dropdown-divider>
-        <div class="d-flex justify-content-end px-2">
-          <b-button size="sm" variant="outline-danger">
-            <i class="fa fa-trash-o"></i>
-          </b-button>
-          <b-button class="mx-1" size="sm" variant="outline-secondary">
-            Edit
-            <!-- <i class="fa fa-edit"></i> -->
+        <div class="align-self-center">
+          <b-button
+            class="p-0"
+            v-show="deletable"
+            variant="link"
+            >
+            <i class="fa fa-times text-secondary"></i>
           </b-button>
         </div>
-      </b-dropdown>
+      </div>
     </div>
   </b-list-group-item>
 </template>
@@ -80,7 +111,9 @@ export default {
 
   data() {
     return {
-      showClipboard: false,
+      hovering: false,
+      editing: false,
+      editingURI: '',
     };
   },
 
@@ -107,6 +140,21 @@ export default {
     },
     icon() {
       return this.isFolder ? 'fa-folder-o' : 'fa-link';
+    },
+    deletable() {
+      return this.hovering && !this.editing;
+    },
+  },
+
+  methods: {
+    startEditing() {
+      this.editing = true;
+      this.editingURI = this.link;
+    },
+    stopEditing() {
+      this.editing = false;
+    },
+    saveEditing(event) {
     },
   },
 };
