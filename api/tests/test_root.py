@@ -93,6 +93,22 @@ def test_get_not_found(monkeypatch, user, client):
     assert client.status == HTTPStatus.NOT_FOUND
 
 
+def test_put_item_name_must_match_pattern(monkeypatch, user, client):
+    me(monkeypatch, user)
+    client.put(f'/{user}/')
+    assert client.status == HTTPStatus.METHOD_NOT_ALLOWED
+    client.put(f'/{user}/영호')
+    assert client.status == HTTPStatus.BAD_REQUEST
+    client.put(f'/{user}/!@#')
+    assert client.status == HTTPStatus.BAD_REQUEST
+    client.put(f'/{user}/+_/qwe/asd')
+    assert client.status == HTTPStatus.BAD_REQUEST
+    client.put(f'/{user}/abc/*')
+    assert client.status == HTTPStatus.BAD_REQUEST
+    client.put(f'/{user}/1 2')
+    assert client.status == HTTPStatus.BAD_REQUEST
+
+
 def test_put_item_without_link_considered_as_folder(monkeypatch, user, client):
     me(monkeypatch, user)
     client.put(f'/{user}/a', ok=True)

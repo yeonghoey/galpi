@@ -22,7 +22,7 @@
                           ref="nameInput"
                           type="text"
                           class="flex-fill"
-                          pattern="[A-Za-z0-9_-]+"
+                          pattern="[A-Za-z0-9-_]+"
                           placeholder="Name"
                           title="Name should only match [A-Za-z0-9-_]+"
                           required>

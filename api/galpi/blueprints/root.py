@@ -1,5 +1,6 @@
 from collections import defaultdict
 from http import HTTPStatus
+import re
 
 from flask import abort, Blueprint, jsonify, request, session
 
@@ -43,6 +44,8 @@ def put_item(user, path):
         abort(HTTPStatus.FORBIDDEN)
 
     path = path.strip('/')
+    if not validate_path(path):
+        abort(HTTPStatus.BAD_REQUEST)
     json = request.get_json()
     link = json and json.get('link')
 
@@ -118,3 +121,9 @@ def compose(user, path, subs):
             parent['subs'] = tree()
 
     return dict(payload)
+
+
+def validate_path(path):
+    segments = path.split('/')
+    pattern = r'^[A-Za-z0-9-_]+$'
+    return all(re.match(pattern, s) for s in segments)
