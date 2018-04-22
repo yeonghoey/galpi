@@ -75,6 +75,7 @@
             class="p-0"
             v-show="deletable"
             variant="link"
+            @click="deleteItem"
             >
             <i class="fa fa-times text-secondary"></i>
           </b-button>
@@ -86,6 +87,7 @@
 
 <script>
 import _ from 'lodash';
+import api from '@/api';
 
 export default {
   name: 'MainListGroupItem',
@@ -155,7 +157,16 @@ export default {
     stopEditing() {
       this.editing = false;
     },
-    saveEditing(event) {
+    saveEditing() {
+      api.put(this.relPath, { link: this.editingURI })
+        .then(() => {
+        })
+        .finally(() => {
+          this.editing = false;
+        });
+    },
+    deleteItem() {
+      api.delete(this.relPath);
     },
   },
 };
