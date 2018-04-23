@@ -2,7 +2,7 @@ service: galpi
 
 provider:
   name: aws
-  runtime: python
+  runtime: python3.6
   stage: ${opt:stage, 'dev'}
   region: ap-northeast-1
   iamRoleStatements:
@@ -39,10 +39,12 @@ custom:
     environment:
       <<: *environment
       CORS_ORIGIN: 'http://localhost:8080'
-    dynamodb_seed:
-      - table: ${self:custom.name}-items
-        sources:
-          - ./dev/items.json
+  prod:
+    <<: *base
+    domain: 'api.galpi.io'
+    environment:
+      <<: *environment
+      CORS_ORIGIN: 'https://galpi.io'
 
   # Plugin
   customDomain:
@@ -53,13 +55,16 @@ custom:
     dockerizePip: non-linux
   wsgi:
     app: app.app
+    pythonBin: python
     packRequirements: false
   dynamodb:
     start:
       migrate: true
     seed:
-      main:
-        sources: ${self:custom.${self:provider.stage}.dynamodb_seed}
+      dev:
+        sources:
+          - table: ${self:custom.name}-items
+            sources: [./dev/items.json]
 
 functions:
   app:
@@ -86,5 +91,5 @@ resources:
           - AttributeName: path
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 16
+          WriteCapacityUnits: 16
