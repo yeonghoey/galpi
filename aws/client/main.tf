@@ -8,6 +8,12 @@ resource "aws_s3_bucket" "main" {
     {
       "Effect":"Allow",
       "Principal": {"AWS": "${aws_cloudfront_origin_access_identity.main.iam_arn}"},
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::${var.bucket}"]
+    },
+    {
+      "Effect":"Allow",
+      "Principal": {"AWS": "${aws_cloudfront_origin_access_identity.main.iam_arn}"},
       "Action": ["s3:GetObject"],
       "Resource": ["arn:aws:s3:::${var.bucket}/*"]
     }
