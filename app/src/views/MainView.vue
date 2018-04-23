@@ -71,7 +71,7 @@ export default {
     item(newItem) {
       const link = newItem.link;
       if (link) {
-        window.location.href = link;
+        window.location.replace(link);
       } else {
         this.renderUI = true;
       }
