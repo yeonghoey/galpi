@@ -76,8 +76,11 @@ export default {
         this.renderUI = true;
       }
     },
-    owner(b) {
-      this.setOwner(b);
+    me: {
+      immediate: true,
+      handler(user) {
+        this.setOwner(user === this.user);
+      },
     },
   },
 };
