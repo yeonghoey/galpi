@@ -30,10 +30,10 @@
                 {{ nameInvalidFeedback }}
               </b-form-invalid-feedback>
             </div>
-            <b-form-checkbox v-model="isFolder"
-                             class="mx-2 align-self-center">
-              is Folder
-            </b-form-checkbox>
+            <b-dropdown :text="typeName" variant="success" slot="append">
+              <b-dropdown-item @click="isFolder = false">Link</b-dropdown-item>
+              <b-dropdown-item @click="isFolder = true">Folder</b-dropdown-item>
+            </b-dropdown>
           </b-input-group>
         </b-form-group>
         <b-form-group v-if="!isFolder">
@@ -74,7 +74,7 @@ export default {
       return this.makePath('');
     },
     typeName() {
-      return this.isFolder ? 'folder' : 'link';
+      return this.isFolder ? 'Folder' : 'Link';
     },
     nameState() {
       return (this.nameNotExists && this.namePatternMatches);
@@ -90,7 +90,7 @@ export default {
         return 'Name exists';
       }
       if (!this.namePatternMatches) {
-        return 'Name should match [A-Za-z0-9-_]+';
+        return 'Name must match [A-Za-z0-9-_]+';
       }
       return '';
     },
