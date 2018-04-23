@@ -14,7 +14,7 @@
 import AppAuth from '@/components/AppAuth';
 
 export default {
-  name: 'AppNavbar',
+  name: 'MainNavbar',
   components: {
     AppAuth,
   },

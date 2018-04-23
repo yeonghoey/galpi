@@ -2,7 +2,7 @@
   <div>
     <div v-if="renderUI"
          class="h-100 d-flex flex-column">
-      <AppNavbar      class="flex-shrink-0"/>
+      <MainNavbar     class="flex-shrink-0"/>
       <MainBreadcrumb class="flex-shrink-0"/>
       <MainContent    class="flex-fill"/>
     </div>
@@ -11,7 +11,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import AppNavbar from '@/components/AppNavbar';
+import MainNavbar from '@/components/MainNavbar';
 import MainBreadcrumb from '@/components/MainBreadcrumb';
 import MainContent from '@/components/MainContent';
 
@@ -19,7 +19,7 @@ export default {
   name: 'MainView',
 
   components: {
-    AppNavbar,
+    MainNavbar,
     MainBreadcrumb,
     MainContent,
   },
