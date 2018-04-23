@@ -1,0 +1,95 @@
+service: galpi
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: ${opt:stage, 'dev'}
+  region: ap-northeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": [Items, Arn] }
+
+plugins:
+  - serverless-domain-manager
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-dynamodb-local
+
+custom:
+  name: ${self:service}-${self:provider.stage}
+
+  # Stage
+  _base: &base
+    domain: '<unused>'
+    environment: &environment
+      SECRET_KEY: ${ssm:/galpi/${self:provider.stage}/secret_key}
+      CLIENT_ID: ${ssm:/galpi/${self:provider.stage}/client_id}
+      CLIENT_SECRET: ${ssm:/galpi/${self:provider.stage}/client_secret}
+      TABLE_PREFIX: ${self:custom.name}
+  dev:
+    <<: *base
+    environment:
+      <<: *environment
+      CORS_ORIGIN: 'http://localhost:8080'
+  prod:
+    <<: *base
+    domain: 'api.galpi.io'
+    environment:
+      <<: *environment
+      CORS_ORIGIN: 'https://galpi.io'
+
+  # Plugin
+  customDomain:
+    domainName: ${self:custom.${self:provider.stage}.domain}
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  pythonRequirements:
+    dockerizePip: non-linux
+  wsgi:
+    app: app.app
+    pythonBin: python
+    packRequirements: false
+  dynamodb:
+    start:
+      migrate: true
+    seed:
+      dev:
+        sources:
+          - table: ${self:custom.name}-items
+            sources: [./dev/items.json]
+
+functions:
+  app:
+    handler: wsgi.handler
+    environment: ${self:custom.${self:provider.stage}.environment}
+    events:
+      - http: 'ANY /'
+      - http: 'ANY {proxy+}'
+
+resources:
+  Resources:
+    Items:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.name}-items
+        AttributeDefinitions:
+          - AttributeName: user
+            AttributeType: S
+          - AttributeName: path
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user
+            KeyType: HASH
+          - AttributeName: path
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 16
+          WriteCapacityUnits: 16
