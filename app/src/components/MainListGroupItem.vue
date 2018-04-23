@@ -21,9 +21,10 @@
               <b-form @submit.stop.prevent="saveEditing"
                       inline>
                 <b-input-group class="flex-fill">
-                  <b-form-input type="url"
+                  <b-form-input v-model.trim="editingURL"
+                                type="url"
                                 placeholder="Link"
-                                v-model.trim="editingURL">
+                                required>
                   </b-form-input>
                   <b-input-group-append>
                     <b-button type="submit"
