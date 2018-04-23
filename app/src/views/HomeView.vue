@@ -26,7 +26,7 @@ export default {
       immediate: true,
       handler(user) {
         if (user) {
-          this.$router.push(`/${user}`);
+          this.$router.replace(`/${user}`);
         }
       },
     },
