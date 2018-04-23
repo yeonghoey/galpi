@@ -22,7 +22,7 @@
                       inline>
                 <b-input-group class="flex-fill">
                   <b-form-input v-model.trim="editingURL"
-                                type="text"
+                                type="url"
                                 placeholder="Link"
                                 required>
                   </b-form-input>
