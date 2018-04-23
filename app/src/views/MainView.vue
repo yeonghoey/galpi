@@ -46,9 +46,11 @@ export default {
       'me',
     ]),
     ...mapState('main', [
-      'owner',
       'item',
     ]),
+    owner() {
+      return this.me === this.user;
+    },
   },
 
   methods: {
@@ -62,7 +64,6 @@ export default {
 
   created() {
     const path = `/${this.user}/${this.path}`;
-    this.setOwner(this.me === this.user);
     this.getItem(path);
   },
 
@@ -74,6 +75,9 @@ export default {
       } else {
         this.renderUI = true;
       }
+    },
+    owner(b) {
+      this.setOwner(b);
     },
   },
 };

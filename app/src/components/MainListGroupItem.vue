@@ -65,7 +65,8 @@
         </div>
 
         <div class="align-self-center">
-          <b-button v-show="deletable"
+          <b-button v-if="owner"
+                    v-show="deletable"
                     @click="deleteItem"
                     class="p-0"
                     variant="link">

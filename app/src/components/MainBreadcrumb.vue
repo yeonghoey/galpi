@@ -6,7 +6,8 @@
                         :active="index === items.length-1"
                         :class="index === 0 ? classUser : []"
                         v-bind="item"/>
-      <MainNewModal class="ml-auto"/>
+      <MainNewModal v-if="owner"
+                    class="ml-auto"/>
     </b-breadcrumb>
   </div>
 </template>
