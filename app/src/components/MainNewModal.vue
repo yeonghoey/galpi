@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'MainNewModal',
@@ -97,6 +97,9 @@ export default {
   },
 
   methods: {
+    ...mapActions('main', [
+      'putSub',
+    ]),
     onShown() {
       this.name = '';
       this.url = '';
@@ -109,7 +112,18 @@ export default {
       if (!this.nameState) {
         return;
       }
-      this.$refs.modal.hide();
+
+      const body = this.isFolder ? {} : { link: this.url };
+      const payload = {
+        path: this.makePath(this.name),
+        name: this.name,
+        body,
+      };
+
+      this.putSub(payload)
+        .finally(() => {
+          this.$refs.modal.hide();
+        });
     },
   },
 };
