@@ -64,15 +64,22 @@
           </div>
         </div>
 
-        <div class="align-self-center">
+        <div class="align-self-center"
+             ref="deleteButtonArea">
           <b-button v-if="owner"
-                    v-show="deletable"
+                    v-show="showDelete"
                     @click="deleteItem"
                     class="p-0"
-                    variant="link">
+                    variant="link"
+                    :disabled="!deletable">
             <i class="fa fa-times text-secondary"></i>
           </b-button>
         </div>
+        <b-tooltip v-if="!deletable"
+                   :target="() => $refs.deleteButtonArea"
+                   placement="left">
+          Folder must be empty
+        </b-tooltip>
       </div>
     </div>
   </b-list-group-item>
@@ -135,8 +142,12 @@ export default {
     icon() {
       return this.isFolder ? 'fa-folder-o' : 'fa-link';
     },
-    deletable() {
+    showDelete() {
       return this.hovering && !this.editing;
+    },
+    deletable() {
+      return (!this.isFolder ||
+              (this.isFolder && this.count === 0));
     },
   },
 
