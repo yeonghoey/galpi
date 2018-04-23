@@ -90,9 +90,14 @@ def delete_item(user, path):
 
 
 def me():
+    user = session.get('user')
+    if user is not None:
+        return user
+
     token = session.get('token')
     if token is None:
         return None
+
     info = validate_token(token)
     return info.get('user')
 

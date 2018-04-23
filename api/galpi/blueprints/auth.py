@@ -43,12 +43,18 @@ def exchange():
 def me():
     token = session.get('token')
     if token is None:
+        session.pop('user', None)
         return jsonify({})
-    return jsonify(github.validate_token(token))
+    else:
+        info = github.validate_token(token)
+        user = info.get('user', None)
+        session['user'] = user
+        return jsonify(info)
 
 
 @bp.route('/signout', methods=['POST'])
 def signout():
+    session.pop('user', None)
     token = session.pop('token', None)
 
     if token is not None:
