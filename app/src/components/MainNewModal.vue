@@ -38,7 +38,7 @@
         </b-form-group>
         <b-form-group v-if="!isFolder">
           <b-form-input v-model.trim="url"
-                        type="url"
+                        type="text"
                         placeholder="Link"
                         required>
             </b-form-input>
