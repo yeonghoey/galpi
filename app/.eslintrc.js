@@ -50,7 +50,7 @@ module.exports = {
     // galpi customized settings
     // -------------------------
     // Disable arguments unused check. Cases like implementing callbacks,
-    // arguments might not be needed. It is valid just omit those arguments,
+    // arguments might not be needed. It is just valid to omit those arguments,
     // But, for readability, it is more important to explicitly specify args.
     'no-unused-vars': ['error', { 'args': 'none' }],
   }
