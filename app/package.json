@@ -18,6 +18,7 @@
     "bootstrap": "^4.1.0",
     "bootstrap-social": "^5.1.1",
     "bootstrap-vue": "^2.0.0-rc.6",
+    "clean-webpack-plugin": "^0.1.19",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.5",
     "vue": "^2.5.2",
