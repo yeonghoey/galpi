@@ -1,8 +1,6 @@
-variable "stage" {
-}
+variable "stage" {}
 
-variable "client_id" {
-}
+variable "client_id" {}
 
 variable "bucket" {
   default = ""
