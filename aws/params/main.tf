@@ -26,3 +26,17 @@ resource "aws_ssm_parameter" "secret_key" {
 resource "random_string" "secret_key" {
   length = 32
 }
+
+resource "aws_ssm_parameter" "bucket" {
+  count = "${var.bucket != "" ? 1 : 0}"
+  name  = "/galpi/${var.stage}/bucket"
+  type  = "String"
+  value = "${var.bucket}"
+}
+
+resource "aws_ssm_parameter" "distribution_id" {
+  count = "${var.distribution_id != "" ? 1 : 0}"
+  name  = "/galpi/${var.stage}/distribution_id"
+  type  = "String"
+  value = "${var.distribution_id}"
+}
