@@ -38,7 +38,7 @@ custom:
     <<: *base
     environment:
       <<: *environment
-      CORS_ORIGIN: 'http://localhost:8080'
+      CORS_ORIGIN: http://${env:HOST, 'localhost'}:8080
   prod:
     <<: *base
     domain: 'api.galpi.io'
