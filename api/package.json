@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "sls wsgi serve"
+    "dev": "sls wsgi serve --host ${HOST:-localhost}"
   },
   "repository": {
     "type": "git",
