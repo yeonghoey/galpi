@@ -42,12 +42,12 @@ def exchange():
 @bp.route('/me')
 def me():
     token = session.get('token')
-    if token is None:
+    info = github.validate_token(token)
+    if info is None:
         session.pop('user', None)
         return jsonify({})
     else:
-        info = github.validate_token(token)
-        user = info.get('user', None)
+        user = info.get('user')
         session['user'] = user
         return jsonify(info)
 

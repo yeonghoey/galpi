@@ -36,7 +36,15 @@ def acquire_token(code):
 
 
 def validate_token(token):
+    if current_app.config['GP_DEV_USER']:
+        return {'user': current_app.config['GP_DEV_USER']}
+
+    # No token
+    if token is None:
+        return None
+
     response = requests.get(auth_url(token), auth=client_auth())
+    # TODO: Return None if there is an error
     json = response.json()
     user = json.get('user', {})
     return {
