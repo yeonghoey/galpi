@@ -16,3 +16,6 @@ CLIENT_ID = environ['CLIENT_ID']
 CLIENT_SECRET = environ['CLIENT_SECRET']
 CORS_ORIGIN = environ['CORS_ORIGIN']
 TABLE_PREFIX = environ['TABLE_PREFIX']
+
+# Dev Configs (Not defined in serverless.yml)
+GP_DEV_USER = environ.get('GP_DEV_USER')
