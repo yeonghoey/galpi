@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "sls wsgi serve --host ${HOST:-localhost}"
+    "dev": "pipenv run sls wsgi serve --host ${HOST:-localhost}",
+    "test": "pipenv run pytest",
+    "db:dev": "sls dynamodb start --seed",
+    "db:test": "sls dynamodb start"
   },
   "repository": {
     "type": "git",
