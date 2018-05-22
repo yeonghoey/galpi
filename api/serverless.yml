@@ -60,6 +60,7 @@ custom:
   dynamodb:
     start:
       migrate: true
+      seed: true
     seed:
       dev:
         sources:
