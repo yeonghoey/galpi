@@ -10,7 +10,7 @@ dev:
 	$(MAKE) --jobs 'db' 'server'
 
 db:
-	sls dynamodb start --seed
+	sls dynamodb start
 
 server:
 	pipenv run sls wsgi serve --host "$(HOST)"
