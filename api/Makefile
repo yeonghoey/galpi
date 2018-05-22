@@ -1,9 +1,10 @@
-SHELL = /bin/sh
+SHELL = /bin/bash
 HOST ?= localhost
 
-.PHONY: init dev db server test
+.PHONY: init dev db server test deploy
 
 init:
+	npm install
 	pipenv install --dev
 
 dev:
@@ -17,3 +18,6 @@ server:
 
 test:
 	pipenv run pytest
+
+deploy:
+	sls deploy --stage 'prod'
