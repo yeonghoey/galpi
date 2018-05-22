@@ -4,8 +4,12 @@ from flask_cors import CORS
 from galpi.blueprints import root, auth
 
 
+__version__ = '0.0.1'
+
+
 def create_app():
     app = Flask('galpi')
+    app.config['GP_VERSION'] = __version__
     app.config.from_object('galpi.config')
 
     app.register_blueprint(root.bp)
