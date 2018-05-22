@@ -2,10 +2,9 @@ from collections import defaultdict
 from http import HTTPStatus
 import re
 
-from flask import abort, Blueprint, jsonify, request, session
+from flask import abort, Blueprint, current_app, jsonify, request, session
 
 from galpi.db import items
-from galpi.github import validate_token
 
 
 bp = Blueprint('root', __name__)
@@ -13,7 +12,9 @@ bp = Blueprint('root', __name__)
 
 @bp.route('/')
 def index():
-    return ('', HTTPStatus.NO_CONTENT)
+    return jsonify({
+        'version': current_app.config['GP_VERSION'],
+    })
 
 
 @bp.route('/<user>/')
