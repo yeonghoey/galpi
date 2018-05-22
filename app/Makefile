@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 PATH := node_modules/.bin:$(PATH)
 
-GP_HOST  ?= localhost
+HOST  ?= localhost
 GP_STAGE ?= prod
 
 .PHONY: init dev build deploy
