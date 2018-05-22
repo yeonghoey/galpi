@@ -4,7 +4,7 @@ PATH := node_modules/.bin:$(PATH)
 HOST  ?= localhost
 GP_STAGE ?= prod
 
-.PHONY: init dev build deploy
+.PHONY: init dev deploy
 
 init:
 	npm install
@@ -13,7 +13,8 @@ init:
 dev:
 	webpack-dev-server --inline --progress --config build/webpack.dev.conf.js
 
-build:
+
+dist: $(filter-out dist test,$(wildcard *))
 	node build/build.js
 
 # Lookup deploy parameters
@@ -27,10 +28,10 @@ endef
 
 deploy: BUCKET          := $(shell $(call ssm,bucket))
 deploy: DISTRIBUTION_ID := $(shell $(call ssm,distribution_id))
-deploy: build
+deploy: dist
 	pipenv run aws s3 sync "dist" "s3://$(BUCKET)" \
-        --exact-timestamps \
-        --delete
+    --exact-timestamps \
+    --delete
 	pipenv run aws cloudfront create-invalidation \
-       --distribution-id "$(DISTRIBUTION_ID)" \
-       --paths '/*'
+    --distribution-id "$(DISTRIBUTION_ID)" \
+    --paths '/*'
